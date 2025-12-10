@@ -2,7 +2,8 @@ let ENDPOINTS = {
   LOGIN: "/api/users/login",
   S3: "/api/presigned_url",
 };
-import { useUserStore } from "~~/stores/userStore";
+import { useUserStore } from "@/stores/userStore";
+import { useUnitStore } from "@/stores/unitStore";
 class Request {
   constructor() {
     this.handler = {
@@ -22,9 +23,9 @@ class Request {
         return response._data;
       },
     };
-    // const unitStore = useUnitStore();
-    this.base_url = useRuntimeConfig().public.baseURL;
-    // this.base_url = unitStore.baseUrl;
+    const unitStore = useUnitStore();
+    // this.base_url = useRuntimeConfig().public.baseURL;
+    this.base_url = unitStore.baseUrl;
   }
 
   createHeaders() {
