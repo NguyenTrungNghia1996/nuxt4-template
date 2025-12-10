@@ -1,0 +1,42 @@
+{
+  // Gợi ý nhanh trong string (dùng cho class tailwind)
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+
+  // Tailwind trong .vue
+  "tailwindCSS.includeLanguages": {
+    "vue": "html"
+  },
+  "tailwindCSS.classAttributes": ["class", "className"],
+
+  // Định nghĩa file Vue
+  "files.associations": {
+    "*.vue": "vue"
+  },
+
+  // Prettier là formatter mặc định
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // Chỉ format nếu project có file Prettier config (.prettierrc, .prettierrc.json)
+  "prettier.requireConfig": true,
+
+  // Format khi lưu file
+  "editor.formatOnSave": true,
+
+  // Formatter cho từng language
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // Thêm nếu bạn dùng HTML trong Nuxt
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
