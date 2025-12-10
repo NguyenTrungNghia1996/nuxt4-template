@@ -83,8 +83,8 @@
         </button>
       </div>
       <pre
-        class="mt-4 rounded-xl bg-slate-900 p-4 text-xs font-mono leading-relaxed text-emerald-50 shadow-inner ring-1 ring-slate-800 whitespace-pre-wrap break-words">
-{{ usageCode }}
+        class="mt-4 whitespace-pre-wrap break-words rounded-xl bg-slate-900 p-4 font-mono text-xs leading-relaxed text-emerald-50 shadow-inner ring-1 ring-slate-800"
+        >{{ usageCode }}
       </pre>
     </section>
   </div>
@@ -103,7 +103,7 @@ const usageCode = `<NuxtImg
 
 const copiedUsage = ref(false);
 const copyUsage = async () => {
-  if (!process.client || !navigator?.clipboard) return;
+  if (!import.meta.client || !navigator?.clipboard) return;
   await navigator.clipboard.writeText(usageCode.trim());
   copiedUsage.value = true;
   setTimeout(() => {

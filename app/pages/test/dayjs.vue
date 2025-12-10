@@ -127,9 +127,7 @@
       <section class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-emerald-600">
-              Usage
-            </p>
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-emerald-600">Usage</p>
             <h2 class="text-lg font-semibold text-gray-900">Cách dùng nhanh</h2>
             <p class="text-sm text-gray-600">
               Copy snippet dưới đây để dùng Day.js (UTC, timezone, relative time) trong component.
@@ -158,8 +156,9 @@
                 <span>{{ copiedUsage === idx ? "Đã copy" : "Copy" }}</span>
               </button>
             </div>
-            <pre class="mt-3 whitespace-pre-wrap break-words text-xs leading-relaxed text-emerald-50">
-{{ block.code }}
+            <pre
+              class="mt-3 whitespace-pre-wrap break-words text-xs leading-relaxed text-emerald-50"
+              >{{ block.code }}
             </pre>
           </article>
         </div>
@@ -241,7 +240,7 @@ const display = computed(() =>
 
 const copiedUsage = ref<number | null>(null);
 const copyUsage = async (code: string, idx: number) => {
-  if (!process.client || !navigator?.clipboard) return;
+  if (!import.meta.client || !navigator?.clipboard) return;
   await navigator.clipboard.writeText(code.trim());
   copiedUsage.value = idx;
   setTimeout(() => {

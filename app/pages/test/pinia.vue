@@ -165,7 +165,7 @@ const setCount = () => counter.setCount(100);
 
 const copiedUsage = ref(false);
 const copyUsage = async () => {
-  if (!process.client || !navigator?.clipboard) return;
+  if (!import.meta.client || !navigator?.clipboard) return;
   await navigator.clipboard.writeText(usageCode.trim());
   copiedUsage.value = true;
   setTimeout(() => {
