@@ -77,4 +77,7 @@ const icons = [
     color: "text-rose-600",
   },
 ];
+definePageMeta({
+  layout: "empty",
+});
 </script>

@@ -5,7 +5,9 @@
         <div>
           <h1 class="text-xl font-semibold text-gray-900">Nuxt Image test</h1>
           <p class="text-sm text-gray-600">
-            Ví dụ dùng ảnh internet với <code>NuxtImg</code> để kiểm tra tối ưu hóa, placeholder và sizes.
+            Ví dụ dùng ảnh internet với
+            <code>NuxtImg</code>
+            để kiểm tra tối ưu hóa, placeholder và sizes.
           </p>
         </div>
         <div class="flex items-center gap-2 text-xs text-gray-600">
@@ -19,7 +21,9 @@
       <article class="rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-100">
         <header class="flex items-center justify-between">
           <div class="text-sm font-semibold text-gray-800">Responsive sizes</div>
-          <code class="rounded bg-gray-100 px-2 py-1 text-xs text-gray-600">sizes=&quot;sm:100vw md:640px&quot;</code>
+          <code class="rounded bg-gray-100 px-2 py-1 text-xs text-gray-600">
+            sizes=&quot;sm:100vw md:640px&quot;
+          </code>
         </header>
         <NuxtImg
           class="mt-3 h-56 w-full rounded-lg object-cover"
@@ -30,18 +34,19 @@
           height="360"
           format="webp"
           placeholder="/images/placeholder.png"
-          loading="lazy"
-        />
+          loading="lazy" />
         <p class="mt-3 text-sm text-gray-600">
-          Ảnh internet được render qua IPX, tự co giãn theo viewport (full width trên mobile, 640px trên desktop) và dùng
-          placeholder local.
+          Ảnh internet được render qua IPX, tự co giãn theo viewport (full width trên mobile, 640px
+          trên desktop) và dùng placeholder local.
         </p>
       </article>
 
       <article class="rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-100">
         <header class="flex items-center justify-between">
           <div class="text-sm font-semibold text-gray-800">Fixed container + placeholders</div>
-          <code class="rounded bg-gray-100 px-2 py-1 text-xs text-gray-600">placeholder=&quot;blur&quot;</code>
+          <code class="rounded bg-gray-100 px-2 py-1 text-xs text-gray-600">
+            placeholder=&quot;blur&quot;
+          </code>
         </header>
         <div class="relative mt-3 overflow-hidden rounded-lg bg-slate-50">
           <NuxtImg
@@ -51,14 +56,19 @@
             placeholder="/images/placeholder.png"
             width="640"
             height="360"
-            quality="80"
-          />
+            quality="80" />
         </div>
         <p class="mt-3 text-sm text-gray-600">
-          Ví dụ khung cố định có placeholder custom từ <code>/public/images/placeholder.png</code> trước khi ảnh tải xong.
-          Bạn có thể thử inspect để xem srcset/sizes.
+          Ví dụ khung cố định có placeholder custom từ
+          <code>/public/images/placeholder.png</code>
+          trước khi ảnh tải xong. Bạn có thể thử inspect để xem srcset/sizes.
         </p>
       </article>
     </section>
   </div>
 </template>
+<script setup>
+definePageMeta({
+  layout: "empty",
+});
+</script>
