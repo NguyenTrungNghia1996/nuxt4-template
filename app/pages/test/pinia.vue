@@ -101,9 +101,7 @@
       <section class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-amber-600">
-              Usage
-            </p>
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-amber-600">Usage</p>
             <h2 class="text-lg font-semibold text-gray-900">Cách dùng nhanh</h2>
             <p class="text-sm text-gray-600">
               Copy snippet để sử dụng lại store đếm có persist/localStorage trong component bất kỳ.
@@ -117,8 +115,8 @@
           </button>
         </div>
         <pre
-          class="mt-4 rounded-xl bg-slate-900 p-4 text-xs font-mono leading-relaxed text-amber-50 shadow-inner ring-1 ring-slate-800 whitespace-pre-wrap break-words">
-{{ usageCode }}
+          class="mt-4 whitespace-pre-wrap break-words rounded-xl bg-slate-900 p-4 font-mono text-xs leading-relaxed text-amber-50 shadow-inner ring-1 ring-slate-800"
+          >{{ usageCode }}
         </pre>
       </section>
     </div>
