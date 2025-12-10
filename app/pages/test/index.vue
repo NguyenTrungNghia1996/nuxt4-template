@@ -94,6 +94,15 @@ const items = [
     badgeBg: "bg-amber-50",
     badgeText: "text-amber-600",
   },
+  {
+    title: "Pinia store",
+    description: "Demo counter có persist, actions/getter, hiển thị snapshot JSON.",
+    to: "/test/pinia",
+    tag: "State",
+    icon: "ri:database-2-line",
+    badgeBg: "bg-amber-50",
+    badgeText: "text-amber-700",
+  },
 ];
 definePageMeta({
   layout: "empty",
