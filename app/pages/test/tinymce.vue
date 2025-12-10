@@ -99,6 +99,30 @@
           </div>
         </div>
       </section>
+
+      <section class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-emerald-600">
+              Usage
+            </p>
+            <h2 class="text-lg font-semibold text-gray-900">Cách dùng nhanh</h2>
+            <p class="text-sm text-gray-600">
+              Copy block này để gắn TinyMCE (SSR safe) vào trang của bạn với v-model và cấu hình mẫu.
+            </p>
+          </div>
+          <button
+            class="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-3 py-1 text-xs font-semibold text-white transition hover:bg-emerald-600"
+            @click="copyUsage">
+            <Icon :name="copiedUsage ? 'ri:check-line' : 'ri:clipboard-line'" class="h-4 w-4" />
+            <span>{{ copiedUsage ? "Đã copy" : "Copy" }}</span>
+          </button>
+        </div>
+        <pre
+          class="mt-4 rounded-xl bg-slate-900 p-4 text-xs font-mono leading-relaxed text-emerald-50 shadow-inner ring-1 ring-slate-800 whitespace-pre-wrap break-words">
+{{ usageCode }}
+        </pre>
+      </section>
     </div>
   </div>
 </template>
@@ -117,6 +141,29 @@ const editorInit = {
   branding: false,
   content_style: "body { font-family: Roboto, sans-serif; font-size:14px; color:#0f172a; }",
   placeholder: "Nhập nội dung...",
+};
+
+const usageCode = `<ClientOnly>
+  <TinyMCE v-model="content" :init="editorInit" />
+</ClientOnly>
+
+const content = ref("<p>Hello TinyMCE</p>");
+const editorInit = {
+  menubar: false,
+  height: 400,
+  plugins: "link lists code table image",
+  toolbar:
+    "undo redo | blocks | bold italic underline forecolor | alignleft aligncenter alignright | bullist numlist | link image table | code",
+};`;
+
+const copiedUsage = ref(false);
+const copyUsage = async () => {
+  if (!process.client || !navigator?.clipboard) return;
+  await navigator.clipboard.writeText(usageCode.trim());
+  copiedUsage.value = true;
+  setTimeout(() => {
+    copiedUsage.value = false;
+  }, 1500);
 };
 
 definePageMeta({

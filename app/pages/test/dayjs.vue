@@ -123,6 +123,47 @@
           </div>
         </div>
       </section>
+
+      <section class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-emerald-600">
+              Usage
+            </p>
+            <h2 class="text-lg font-semibold text-gray-900">Cách dùng nhanh</h2>
+            <p class="text-sm text-gray-600">
+              Copy snippet dưới đây để dùng Day.js (UTC, timezone, relative time) trong component.
+            </p>
+          </div>
+          <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+            Plugin: app/plugins/dayjs.ts
+          </span>
+        </div>
+        <div class="mt-4 grid gap-4 md:grid-cols-2">
+          <article
+            v-for="(block, idx) in usageBlocks"
+            :key="block.title"
+            class="flex flex-col rounded-xl bg-slate-900 p-4 text-slate-100 shadow-inner ring-1 ring-slate-800">
+            <div class="flex items-center justify-between gap-3">
+              <div class="space-y-1">
+                <p class="text-xs uppercase tracking-[0.08em] text-emerald-300">Snippet</p>
+                <h3 class="text-base font-semibold text-white">{{ block.title }}</h3>
+              </div>
+              <button
+                class="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-3 py-1 text-xs font-semibold text-white transition hover:bg-emerald-600"
+                @click="copyUsage(block.code, idx)">
+                <Icon
+                  :name="copiedUsage === idx ? 'ri:check-line' : 'ri:clipboard-line'"
+                  class="h-4 w-4" />
+                <span>{{ copiedUsage === idx ? "Đã copy" : "Copy" }}</span>
+              </button>
+            </div>
+            <pre class="mt-3 whitespace-pre-wrap break-words text-xs leading-relaxed text-emerald-50">
+{{ block.code }}
+            </pre>
+          </article>
+        </div>
+      </section>
     </div>
   </div>
 </template>
@@ -176,6 +217,37 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (timer.value) clearInterval(timer.value);
 });
+
+const usageBlocks = [
+  {
+    title: "Inject Day.js trong component",
+    code: `const { $dayjs } = useNuxtApp();
+
+const localTime = computed(() =>
+  $dayjs().tz("Asia/Ho_Chi_Minh").format("YYYY-MM-DD HH:mm:ss"),
+);
+
+const relative = computed(() => $dayjs().add(3, "hour").fromNow());`,
+  },
+  {
+    title: "Parse + format chuỗi ngày giờ",
+    code: `const input = "15/03/2025 14:20";
+const parsed = computed(() => $dayjs(input, "DD/MM/YYYY HH:mm"));
+const display = computed(() =>
+  parsed.value.format("dddd, DD/MM/YYYY HH:mm:ss"),
+);`,
+  },
+];
+
+const copiedUsage = ref<number | null>(null);
+const copyUsage = async (code: string, idx: number) => {
+  if (!process.client || !navigator?.clipboard) return;
+  await navigator.clipboard.writeText(code.trim());
+  copiedUsage.value = idx;
+  setTimeout(() => {
+    copiedUsage.value = null;
+  }, 1500);
+};
 definePageMeta({
   layout: "empty",
 });

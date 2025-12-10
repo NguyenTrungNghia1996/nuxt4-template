@@ -97,6 +97,30 @@
           </div>
         </article>
       </section>
+
+      <section class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-amber-600">
+              Usage
+            </p>
+            <h2 class="text-lg font-semibold text-gray-900">Cách dùng nhanh</h2>
+            <p class="text-sm text-gray-600">
+              Copy snippet để sử dụng lại store đếm có persist/localStorage trong component bất kỳ.
+            </p>
+          </div>
+          <button
+            class="inline-flex items-center gap-2 rounded-lg bg-amber-500 px-3 py-1 text-xs font-semibold text-white transition hover:bg-amber-600"
+            @click="copyUsage">
+            <Icon :name="copiedUsage ? 'ri:check-line' : 'ri:clipboard-line'" class="h-4 w-4" />
+            <span>{{ copiedUsage ? "Đã copy" : "Copy" }}</span>
+          </button>
+        </div>
+        <pre
+          class="mt-4 rounded-xl bg-slate-900 p-4 text-xs font-mono leading-relaxed text-amber-50 shadow-inner ring-1 ring-slate-800 whitespace-pre-wrap break-words">
+{{ usageCode }}
+        </pre>
+      </section>
     </div>
   </div>
 </template>
@@ -128,6 +152,27 @@ const reset = () => {
 const setCount = (value: number) => {
   store.setCount(value);
   syncSnapshot();
+};
+
+const usageCode = `import { storeToRefs } from "pinia";
+import { useCounterStore } from "~/stores/counter";
+
+const counter = useCounterStore();
+const { count, doubleCount } = storeToRefs(counter);
+
+const increment = () => counter.increment();
+const decrement = () => counter.decrement();
+const setCount = () => counter.setCount(100);
+`;
+
+const copiedUsage = ref(false);
+const copyUsage = async () => {
+  if (!process.client || !navigator?.clipboard) return;
+  await navigator.clipboard.writeText(usageCode.trim());
+  copiedUsage.value = true;
+  setTimeout(() => {
+    copiedUsage.value = false;
+  }, 1500);
 };
 
 watch(
