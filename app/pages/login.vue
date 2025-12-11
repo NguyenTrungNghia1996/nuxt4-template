@@ -38,9 +38,7 @@
             <!-- <a-typography-link> Quên mật khẩu? </a-typography-link> -->
           </div>
           <a-form-item>
-            <a-button type="primary" html-type="submit" size="large" block :loading="loading">
-              Đăng nhập
-            </a-button>
+            <a-button type="primary" html-type="submit" size="large" block>Đăng nhập</a-button>
           </a-form-item>
         </a-form>
       </a-card>
@@ -55,13 +53,12 @@ const { rememberMe, saveCredentials, getCredentials, clearCredentials } = useAut
 const { RestApi } = useApi();
 const userStore = useUserStore();
 const unitStore = useUnitStore();
-console.log(unitStore.subdomain);
+const settingStore = useSettingStore();
 const savedCredentials = getCredentials();
 const form = reactive({
   username: savedCredentials?.username || "",
   password: savedCredentials?.password || "",
 });
-const loading = ref(false);
 watch(rememberMe, async () => {
   if (!rememberMe.value) {
     form.username = "";
@@ -70,9 +67,29 @@ watch(rememberMe, async () => {
   }
 });
 const handleLogin = async () => {
-  // if (rememberMe.value) {
-
-  // }
-  saveCredentials(form.username, form.password);
+  settingStore.setLoading(true);
+  try {
+    let res;
+    if (unitStore.subdomain == "sa") {
+      res = await RestApi.user_sa.login({ body: JSON.stringify(form) });
+    } else {
+      form.subdomain = unitStore.subdomain;
+      res = await RestApi.user_unit.login({ body: JSON.stringify(form) });
+    }
+    const { data, status, error } = res;
+    if (data.value?.status === "success") {
+      if (rememberMe.value) {
+        saveCredentials(form.username, form.password);
+      }
+      await userStore.setUser(data.value.data);
+      message.success("Đăng nhập thành công!");
+    } else {
+      throw new Error(error.value?.data?.message);
+    }
+  } catch (error) {
+    message.error(error?.message || error?.value?.data?.message || "Đăng Nhập Thất Bại");
+  } finally {
+    settingStore.setLoading(false);
+  }
 };
 </script>

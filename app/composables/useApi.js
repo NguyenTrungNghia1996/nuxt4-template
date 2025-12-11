@@ -1,5 +1,6 @@
 let ENDPOINTS = {
-  LOGIN: "/api/users/login",
+  LOGIN_SA: "/auth/admin",
+  LOGIN_UNIT: "/auth/unit",
   S3: "/api/presigned_url",
 };
 // import { useUserStore } from "@/stores/userStore";
@@ -13,13 +14,12 @@ class Request {
         return response._data;
       },
       async onResponseError({ request, response, options }) {
-        if (response.status == 401) {
+        const userStore = useUserStore();
+        if (Object.keys(userStore.user).length > 0 && response.status == 401) {
           message.info("Phiên Đăng Nhập Kết Thúc Vui Lòng Đăng Nhập Lại! ");
-          const userStore = useUserStore();
           userStore.logout();
           return await navigateTo("/auth/login");
         }
-
         return response._data;
       },
     };
@@ -118,7 +118,8 @@ class Request {
 class RestApi {
   constructor() {
     this.request = new Request();
-    this.user = new User(this.request);
+    this.user_sa = new User_SA(this.request);
+    this.user_unit = new User_Unit(this.request);
   }
   async get_url_upload(acl, content_encoding, content_type, key, platform) {
     let data = { acl, content_encoding, content_type, key, platform };
@@ -168,11 +169,19 @@ export default () => {
   return { RestApi: new RestApi() };
 };
 
-class User {
+class User_SA {
   constructor() {
     this.request = new Request();
   }
   async login(data) {
-    return await this.request.post(ENDPOINTS.LOGIN, data);
+    return await this.request.post(ENDPOINTS.LOGIN_SA, data);
+  }
+}
+class User_Unit {
+  constructor() {
+    this.request = new Request();
+  }
+  async login(data) {
+    return await this.request.post(ENDPOINTS.LOGIN_UNIT, data);
   }
 }
