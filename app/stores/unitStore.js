@@ -2,7 +2,8 @@ import { defineStore } from "pinia";
 
 export const useUnitStore = defineStore("unit", {
   state: () => ({
-    unit: null, // Dữ liệu đơn vị: { _id, name, subdomain, active, ... }
+    unit: null,
+    subdomain: "",
   }),
 
   actions: {
@@ -11,6 +12,12 @@ export const useUnitStore = defineStore("unit", {
     },
     clearUnit() {
       this.unit = null;
+    },
+    setSubdomain(data) {
+      this.subdomain = data;
+    },
+    clearSubdomain() {
+      this.subdomain = "";
     },
   },
 

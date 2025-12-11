@@ -21,6 +21,16 @@ export default defineNuxtConfig({
     build: {
       sourcemap: false,
     },
+    server: {
+      host: "0.0.0.0",
+      port: 3000,
+      allowedHosts: "all",
+    },
+  },
+  devServer: {
+    host: "0.0.0.0",
+    port: 3000,
+    allowedHosts: "all",
   },
   modules: [
     "@nuxt/icon",
