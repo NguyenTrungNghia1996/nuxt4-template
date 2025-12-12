@@ -1,4 +1,8 @@
 <template>
-  <div>dashboard admin</div>
+  <div>
+    {{ userStore }}
+  </div>
 </template>
-<script setup></script>
+<script setup>
+const userStore = useUserStore();
+</script>

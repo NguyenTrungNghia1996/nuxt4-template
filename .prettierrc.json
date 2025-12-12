@@ -6,7 +6,7 @@
   "useTabs": false,
   "arrowParens": "avoid",
   "bracketSameLine": true,
-  "printWidth": 100,
+  "printWidth": 1000,
   "htmlWhitespaceSensitivity": "ignore",
   "proseWrap": "preserve",
   "plugins": ["prettier-plugin-tailwindcss"],

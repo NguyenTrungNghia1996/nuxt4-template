@@ -6,10 +6,10 @@ module.exports = {
   useTabs: false,
   arrowParens: "avoid",
   bracketSameLine: true,
-  printWidth: 100,
+  printWidth: 1000,
   htmlWhitespaceSensitivity: "ignore",
   proseWrap: "preserve",
 
   plugins: [require("prettier-plugin-tailwindcss")],
-  tailwindConfig: "./tailwind.config.js"
-}
+  tailwindConfig: "./tailwind.config.js",
+};

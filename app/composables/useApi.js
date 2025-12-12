@@ -2,6 +2,7 @@ let ENDPOINTS = {
   LOGIN_SA: "/auth/admin",
   LOGIN_UNIT: "/auth/unit",
   S3: "/api/presigned_url",
+  SUPERADMINS: "/superadmins",
 };
 // import { useUserStore } from "@/stores/userStore";
 // import { useUnitStore } from "@/stores/unitStore";
@@ -120,6 +121,7 @@ class RestApi {
     this.request = new Request();
     this.user_sa = new User_SA(this.request);
     this.user_unit = new User_Unit(this.request);
+    this.superAdmin = new SuperAdmin(this.request);
   }
   async get_url_upload(acl, content_encoding, content_type, key, platform) {
     let data = { acl, content_encoding, content_type, key, platform };
@@ -183,5 +185,26 @@ class User_Unit {
   }
   async login(data) {
     return await this.request.post(ENDPOINTS.LOGIN_UNIT, data);
+  }
+}
+class SuperAdmin {
+  constructor(request) {
+    this.request = request;
+  }
+  async list(query) {
+    return await this.request.get(ENDPOINTS.SUPERADMINS, { query });
+  }
+  async create(data) {
+    return await this.request.post(ENDPOINTS.SUPERADMINS, {
+      body: JSON.stringify(data),
+    });
+  }
+  async update(data) {
+    return await this.request.put(ENDPOINTS.SUPERADMINS, {
+      body: JSON.stringify(data),
+    });
+  }
+  async remove(query) {
+    return await this.request.delete(ENDPOINTS.SUPERADMINS, { query });
   }
 }
