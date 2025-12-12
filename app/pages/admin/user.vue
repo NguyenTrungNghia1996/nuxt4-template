@@ -8,6 +8,56 @@
   </div>
 </template>
 <script setup>
+const { RestApi } = useApi();
+
 const searchText = ref("");
-const handleSearch = async () => {};
+const loading = ref(false);
+const dataSource = ref([]);
+
+const pagination = reactive({
+  current: 1,
+  pageSize: 10,
+  total: 0,
+  showSizeChanger: true,
+  pageSizeOptions: ["1", "10", "20", "50"],
+  showTotal: total => `Tổng ${total} bản ghi`,
+});
+const param = ref({ PageIndex: 1, PageSize: 10, search: "" });
+
+const fetchData = async (param = {}) => {
+  try {
+    loading.value = true;
+
+    const { data, error } = await RestApi.superAdmin.list({ params: param });
+    if (data.value?.status === "success") {
+      dataSource.value = data.value.data.items || [];
+      pagination.total = data.value.data.totalrecord ?? data.value.data.total ?? 0;
+    } else {
+      throw new Error(error.value?.data?.message || "Không thể tải danh sách super admin");
+    }
+  } catch (error) {
+    dataSource.value = [];
+    pagination.total = 0;
+    message.error(error.message || "Không thể tải danh sách super admin");
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handleSearch = async () => {
+  pagination.page = 1;
+  await fetchData({ keyword: searchText.value });
+};
+
+const resetSearch = async () => {
+  searchText.value = "";
+  pagination.page = 1;
+  await fetchData();
+};
+
+const showModal = () => {};
+
+onMounted(() => {
+  fetchData();
+});
 </script>
