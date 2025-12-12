@@ -14,5 +14,6 @@ export default defineNuxtRouteMiddleware(async to => {
   // console.log(">>>>>>>>>>>>", userStore);
   // if (!userStore.token) {
   // }
-  return navigateTo("/login");
+  // return navigateTo("/login");
+  return;
 });

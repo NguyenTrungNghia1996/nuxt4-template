@@ -1,7 +1,3 @@
-import { useSettingStore } from "~/stores/settingStore";
-import useApi from "~/composables/useApi";
-import { computed } from "vue";
-
 export const useMenu = () => {
   const { RestApi } = useApi();
   const settingStore = useSettingStore();
@@ -65,12 +61,13 @@ export const useMenu = () => {
 
   const loadMenu = async () => {
     try {
-      const { data } = await RestApi.menu.list();
-      if (data.value?.status === "success") {
-        const tree = buildTree(data.value.data.items);
-        settingStore.setMenu(tree);
-        return tree;
-      }
+      console.log("loadMenu");
+      // const { data } = await RestApi.menu.list();
+      // if (data.value?.status === "success") {
+      //   const tree = buildTree(data.value.data.items);
+      //   settingStore.setMenu(tree);
+      //   return tree;
+      // }
     } catch (e) {
       console.error("Failed to load menu", e);
     }

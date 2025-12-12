@@ -51,6 +51,8 @@ definePageMeta({
 });
 const { rememberMe, saveCredentials, getCredentials, clearCredentials } = useAuth();
 const { RestApi } = useApi();
+const { loadMenu } = useMenu();
+const { loadPermissions } = usePermissions();
 const userStore = useUserStore();
 const unitStore = useUnitStore();
 const settingStore = useSettingStore();
@@ -70,11 +72,14 @@ const handleLogin = async () => {
   settingStore.setLoading(true);
   try {
     let res;
+    let navi;
     if (unitStore.subdomain == "sa") {
       res = await RestApi.user_sa.login({ body: JSON.stringify(form) });
+      navi = "/admin";
     } else {
       form.subdomain = unitStore.subdomain;
       res = await RestApi.user_unit.login({ body: JSON.stringify(form) });
+      navi = "/";
     }
     const { data, status, error } = res;
     if (data.value?.status === "success") {
@@ -82,7 +87,10 @@ const handleLogin = async () => {
         saveCredentials(form.username, form.password);
       }
       await userStore.setUser(data.value.data);
+      await loadMenu();
+      await loadPermissions();
       message.success("Đăng nhập thành công!");
+      await navigateTo(navi, { replace: true });
     } else {
       throw new Error(error.value?.data?.message);
     }

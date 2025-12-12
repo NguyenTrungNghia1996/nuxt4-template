@@ -10,6 +10,9 @@ export const useSettingStore = defineStore(
         showLogo: true,
         transparent: false,
       },
+      menu: [],
+      permissions: [],
+      current_permission: 0,
     }),
     actions: {
       setLoading(value) {
@@ -18,12 +21,24 @@ export const useSettingStore = defineStore(
       setDetailLoading(value) {
         this.loading = value;
       },
+      setPermissions(value) {
+        this.permissions = value;
+      },
+      setCurrentPermission(value) {
+        this.current_permission = value;
+      },
     },
     getters: {
       isLoading: state => state.loading.isActive,
+      menuItems: state => state.menu,
+      menuPermissions: state => state.permissions,
+      currentPermission: state => {
+        const PERMISSION_STATE = { NO_ACCESS: 0, VIEW: 1, EDIT: 2 };
+        return state.current_permission === PERMISSION_STATE.EDIT;
+      },
     },
   },
-  {
-    persist: true,
-  },
+  // {
+  //   persist: true,
+  // },
 );
