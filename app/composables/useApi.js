@@ -191,20 +191,16 @@ class SuperAdmin {
   constructor(request) {
     this.request = request;
   }
-  async list(query) {
-    return await this.request.get(ENDPOINTS.SUPERADMINS, { query });
+  async list(data) {
+    return await this.request.get(ENDPOINTS.SUPERADMINS, data);
   }
   async create(data) {
-    return await this.request.post(ENDPOINTS.SUPERADMINS, {
-      body: JSON.stringify(data),
-    });
+    return await this.request.post(ENDPOINTS.SUPERADMINS, data);
   }
   async update(data) {
-    return await this.request.put(ENDPOINTS.SUPERADMINS, {
-      body: JSON.stringify(data),
-    });
+    return await this.request.put(ENDPOINTS.SUPERADMINS, data);
   }
   async remove(query) {
-    return await this.request.delete(ENDPOINTS.SUPERADMINS, { query });
+    return await this.request.delete(ENDPOINTS.SUPERADMINS, query);
   }
 }
