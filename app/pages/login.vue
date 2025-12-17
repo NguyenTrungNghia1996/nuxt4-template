@@ -7,27 +7,15 @@
       <a-card class="shadow-xl">
         <h2 class="mb-6 text-center text-2xl font-bold text-gray-800">Đăng nhập hệ thống</h2>
         <a-form :model="form" layout="vertical" @finish="handleLogin" autocomplete="off">
-          <a-form-item
-            label="Tài khoản"
-            name="username"
-            :rules="[{ required: true, message: 'Vui lòng nhập nhập tài khoản!' }]">
-            <a-input
-              v-model:value="form.username"
-              placeholder="Nhập tài khoản của bạn"
-              size="large">
+          <a-form-item label="Tài khoản" name="username" :rules="[{ required: true, message: 'Vui lòng nhập nhập tài khoản!' }]">
+            <a-input v-model:value="form.username" placeholder="Nhập tài khoản của bạn" size="large">
               <template #prefix>
                 <UserOutlined class="text-gray-400" />
               </template>
             </a-input>
           </a-form-item>
-          <a-form-item
-            label="Mật khẩu"
-            name="password"
-            :rules="[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]">
-            <a-input-password
-              v-model:value="form.password"
-              placeholder="Nhập mật khẩu"
-              size="large">
+          <a-form-item label="Mật khẩu" name="password" :rules="[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]">
+            <a-input-password v-model:value="form.password" placeholder="Nhập mật khẩu" size="large">
               <template #prefix>
                 <LockOutlined class="text-gray-400" />
               </template>
@@ -50,9 +38,9 @@ definePageMeta({
   layout: "auth",
 });
 const { rememberMe, saveCredentials, getCredentials, clearCredentials } = useAuth();
-const { RestApi } = useApi();
-const { loadMenu } = useMenu();
-const { loadPermissions } = usePermissions();
+const { authAdmin, authUnit } = useApi();
+// const { loadMenu } = useMenu();
+// const { loadPermissions } = usePermissions();
 const userStore = useUserStore();
 const unitStore = useUnitStore();
 const settingStore = useSettingStore();
@@ -74,21 +62,21 @@ const handleLogin = async () => {
     let res;
     let navi;
     if (unitStore.subdomain == "sa") {
-      res = await RestApi.user_sa.login({ body: JSON.stringify(form) });
+      res = await authAdmin.login({ body: JSON.stringify(form) });
       navi = "/admin";
     } else {
       form.subdomain = unitStore.subdomain;
-      res = await RestApi.user_unit.login({ body: JSON.stringify(form) });
+      res = await authUnit.login({ body: JSON.stringify(form) });
       navi = "/";
     }
     const { data, status, error } = res;
     if (data.value?.status === "success") {
-      if (rememberMe.value) {
-        saveCredentials(form.username, form.password);
-      }
-      await userStore.setUser(data.value.data);
-      await loadMenu();
-      await loadPermissions();
+      // if (rememberMe.value) {
+      //   saveCredentials(form.username, form.password);
+      // }
+      userStore.setUser(data.value.data);
+      // await loadMenu();
+      // await loadPermissions();
       message.success("Đăng nhập thành công!");
       await navigateTo(navi, { replace: true });
     } else {

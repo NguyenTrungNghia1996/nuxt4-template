@@ -2,6 +2,6 @@ html,
 body {
   font-family: "Roboto", sans-serif;
 }
-button {
+/* button {
   @apply !flex !items-center !justify-center;
-}
+} */

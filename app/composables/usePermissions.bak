@@ -3,24 +3,24 @@ import useApi from "~/composables/useApi";
 export const usePermissions = () => {
   const { RestApi } = useApi();
   const settingStore = useSettingStore();
-  const DEFAULT_PERMISSIONS = [
-    {
-      key: "menu",
-      permissionValue: 42,
-    },
-    {
-      key: "menu-plvuxq63o0",
-      permissionValue: 0,
-    },
-    {
-      key: "menu-c8u2jgnoto",
-      permissionValue: 2796202,
-    },
-    {
-      key: "menu-f5fh5fri05",
-      permissionValue: 170,
-    },
-  ];
+  // const DEFAULT_PERMISSIONS = [
+  //   {
+  //     key: "menu",
+  //     permissionValue: 42,
+  //   },
+  //   {
+  //     key: "menu-plvuxq63o0",
+  //     permissionValue: 0,
+  //   },
+  //   {
+  //     key: "menu-c8u2jgnoto",
+  //     permissionValue: 2796202,
+  //   },
+  //   {
+  //     key: "menu-f5fh5fri05",
+  //     permissionValue: 170,
+  //   },
+  // ];
   const loadPermissions = async () => {
     try {
       console.log("permission");
@@ -37,7 +37,7 @@ export const usePermissions = () => {
   };
 
   const setPermissions = perms => {
-    settingStore.setPermissions(perms || DEFAULT_PERMISSIONS);
+    // settingStore.setPermissions(perms || DEFAULT_PERMISSIONS);
     // settingStore.setPermissions(DEFAULT_PERMISSIONS);
   };
 

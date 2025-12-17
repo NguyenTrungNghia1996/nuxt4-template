@@ -32,19 +32,11 @@ export default defineNuxtConfig({
     port: 3000,
     allowedHosts: "all",
   },
-  modules: [
-    "@nuxt/icon",
-    "@nuxt/image",
-    "@pinia/nuxt",
-    "pinia-plugin-persistedstate",
-    "@nuxtjs/tailwindcss",
-    "@ant-design-vue/nuxt",
-    "@vueuse/nuxt",
-  ],
+  modules: ["@nuxt/icon", "@nuxt/image", "@pinia/nuxt", "pinia-plugin-persistedstate", "@nuxtjs/tailwindcss", "@ant-design-vue/nuxt", "@vueuse/nuxt"],
   runtimeConfig: {
     encryptionKey: process.env.NUXT_ENCRYPTION_KEY || "default-strong-key-32-chars-123456",
     public: {
-      baseURL: process.env.NUXT_PUBLIC_BASE_URL || "https://api.nghia196.io.vn",
+      baseURL: process.env.NUXT_PUBLIC_BASE_URL || "http://127.0.0.1:4000",
       // Docker build/version info (injected via ENV or build args)
       buildTag: process.env.NUXT_PUBLIC_BUILD_TAG || "dev",
       buildSha: process.env.NUXT_PUBLIC_BUILD_SHA || "",
