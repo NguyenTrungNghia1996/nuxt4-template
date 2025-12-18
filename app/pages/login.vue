@@ -39,7 +39,7 @@ definePageMeta({
 });
 const { rememberMe, saveCredentials, getCredentials, clearCredentials } = useAuth();
 const { authAdmin, authUnit } = useApi();
-// const { loadMenu } = useMenu();
+const { loadMenu } = useMenu();
 const { loadPermissions } = usePermissions();
 const userStore = useUserStore();
 const unitStore = useUnitStore();
@@ -75,7 +75,7 @@ const handleLogin = async () => {
         saveCredentials(form.username, form.password);
       }
       userStore.setUser(data.value.data);
-      // await loadMenu();
+      await loadMenu();
       await loadPermissions();
       message.success("Đăng nhập thành công!");
       await navigateTo(navi, { replace: true });
