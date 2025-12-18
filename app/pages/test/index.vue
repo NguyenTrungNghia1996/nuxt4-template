@@ -103,6 +103,15 @@ const items = [
     badgeBg: "bg-amber-50",
     badgeText: "text-amber-700",
   },
+  {
+    title: "Permission editor",
+    description: "Test component phân quyền menu (bitmask) với dữ liệu từ API super admin.",
+    to: "/test/permission",
+    tag: "ACL",
+    icon: "ri:shield-keyhole-line",
+    badgeBg: "bg-rose-50",
+    badgeText: "text-rose-600",
+  },
 ];
 definePageMeta({
   layout: "empty",
