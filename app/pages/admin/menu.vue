@@ -203,11 +203,8 @@ const onTitleInput = e => {
 const getNextAvailablePermission = parentId => {
   const siblings = dataSource.value.filter(item => normalizeParent(item.parent_id) === normalizeParent(parentId));
   const used = siblings.map(item => Number(item.permission)).filter(num => !Number.isNaN(num));
-  let candidate = 0;
-  while (used.includes(candidate)) {
-    candidate += 1;
-  }
-  return candidate;
+  if (!used.length) return 0;
+  return Math.max(...used) + 2;
 };
 
 const getDepth = record => {
