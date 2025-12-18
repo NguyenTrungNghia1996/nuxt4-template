@@ -1,7 +1,5 @@
-import useApi from "~/composables/useApi";
-
 export const usePermissions = () => {
-  const { RestApi } = useApi();
+  const { superAdmin } = useApi();
   const settingStore = useSettingStore();
   // const DEFAULT_PERMISSIONS = [
   //   {
@@ -23,8 +21,8 @@ export const usePermissions = () => {
   // ];
   const loadPermissions = async () => {
     try {
-      console.log("permission");
-      // const { data: res } = await RestApi.user.permission();
+      const { data: res } = await superAdmin.getByRest("permissions");
+      console.log("permission", res);
       // const permission = res?.value?.data?.permission;
       // if (permission) {
       //   settingStore.setPermissions(permission);

@@ -40,7 +40,7 @@ definePageMeta({
 const { rememberMe, saveCredentials, getCredentials, clearCredentials } = useAuth();
 const { authAdmin, authUnit } = useApi();
 // const { loadMenu } = useMenu();
-// const { loadPermissions } = usePermissions();
+const { loadPermissions } = usePermissions();
 const userStore = useUserStore();
 const unitStore = useUnitStore();
 const settingStore = useSettingStore();
@@ -71,12 +71,12 @@ const handleLogin = async () => {
     }
     const { data, status, error } = res;
     if (data.value?.status === "success") {
-      // if (rememberMe.value) {
-      //   saveCredentials(form.username, form.password);
-      // }
+      if (rememberMe.value) {
+        saveCredentials(form.username, form.password);
+      }
       userStore.setUser(data.value.data);
       // await loadMenu();
-      // await loadPermissions();
+      await loadPermissions();
       message.success("Đăng nhập thành công!");
       await navigateTo(navi, { replace: true });
     } else {
