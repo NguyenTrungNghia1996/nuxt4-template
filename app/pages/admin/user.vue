@@ -50,20 +50,22 @@
           </a-form-item>
         </div>
 
-        <a-form-item :label="isEdit ? 'Mật khẩu mới (tuỳ chọn)' : 'Mật khẩu'" name="password" :rules="passwordRules">
+        <a-form-item v-if="!isEdit" label="Mật khẩu" name="password" :rules="passwordRules">
           <a-input-password v-model:value="formState.password" />
         </a-form-item>
-
-        <a-form-item label="Nhóm quyền" name="role_group_ids">
-          <a-select v-model:value="formState.role_group_ids" mode="tags" :options="roleGroupOptions" :loading="loadingRoleGroups" allow-clear show-search />
-        </a-form-item>
+        <div class="flex gap-x-2">
+          <SelectRoleAdmin v-model="formState.role_group_ids" name="role_group_ids" label="Nhóm quyền" multiple placeholder="Chọn nhóm quyền" class="w-full flex-1" />
+          <a-form-item label="Là Admin" name="is_admin">
+            <a-switch v-model:checked="formState.is_admin" checked-children="Admin" un-checked-children="User" />
+          </a-form-item>
+        </div>
       </a-form>
     </a-modal>
   </div>
 </template>
 
 <script setup>
-const { superAdmin, superAdminRoleGroup } = useApi();
+const { superAdmin } = useApi();
 
 /* =======================
    STATE & PARAMS
@@ -181,6 +183,7 @@ const formState = reactive({
   password: "",
   name: "",
   email: "",
+  is_admin: false,
   role_group_ids: [],
 });
 
@@ -194,36 +197,13 @@ const emailRules = [
 ];
 
 const passwordRules = computed(() =>
-  isEdit.value
+  !isEdit.value
     ? [
-        {
-          validator: (_, v) => (!v || v.length >= 6 ? Promise.resolve() : Promise.reject("Mật khẩu tối thiểu 6 ký tự")),
-        },
-      ]
-    : [
         { required: true, message: "Vui lòng nhập mật khẩu" },
         { min: 6, message: "Mật khẩu tối thiểu 6 ký tự" },
-      ],
+      ]
+    : [],
 );
-
-/* =======================
-   ROLE GROUPS
-======================= */
-const loadingRoleGroups = ref(false);
-const roleGroupOptions = ref([]);
-
-const fetchRoleGroups = async () => {
-  loadingRoleGroups.value = true;
-  const { data } = await superAdminRoleGroup.get({
-    params: { page: 0, limit: 0 },
-  });
-  roleGroupOptions.value =
-    data.value?.data?.items?.map(i => ({
-      label: i.name,
-      value: i.id || i._id,
-    })) || [];
-  loadingRoleGroups.value = false;
-};
 
 /* =======================
    CRUD
@@ -235,6 +215,7 @@ const resetForm = () => {
     password: "",
     name: "",
     email: "",
+    is_admin: false,
     role_group_ids: [],
   });
   formRef.value?.clearValidate();
@@ -244,7 +225,6 @@ const showModal = async () => {
   isEdit.value = false;
   resetForm();
   modalVisible.value = true;
-  if (!roleGroupOptions.value.length) await fetchRoleGroups();
 };
 
 const openEditModal = async record => {
@@ -255,10 +235,10 @@ const openEditModal = async record => {
     username: record.username,
     name: record.name,
     email: record.email,
+    is_admin: !!record.is_admin,
     role_group_ids: record.role_group_ids || [],
   });
   modalVisible.value = true;
-  if (!roleGroupOptions.value.length) await fetchRoleGroups();
 };
 
 const handleDelete = async record => {
@@ -285,10 +265,12 @@ const handleSubmit = async () => {
   await formRef.value.validate();
   submitting.value = true;
 
+  const payload = { ...formState };
   if (isEdit.value) {
-    await superAdmin.put({ body: formState });
+    delete payload.password; // Không cập nhật mật khẩu super admin tại đây
+    await superAdmin.put({ body: payload });
   } else {
-    await superAdmin.post({ body: formState });
+    await superAdmin.post({ body: payload });
   }
 
   modalVisible.value = false;

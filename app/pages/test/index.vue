@@ -112,6 +112,15 @@ const items = [
     badgeBg: "bg-rose-50",
     badgeText: "text-rose-600",
   },
+  {
+    title: "Role group select",
+    description: "Demo SelectRoleAdmin: fetch nhóm quyền, tìm kiếm, chọn đơn/đa và nút điều hướng.",
+    to: "/test/role-admin-select",
+    tag: "Form",
+    icon: "ri:user-settings-line",
+    badgeBg: "bg-teal-50",
+    badgeText: "text-teal-600",
+  },
 ];
 definePageMeta({
   layout: "empty",
