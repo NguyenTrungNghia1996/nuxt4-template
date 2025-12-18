@@ -62,6 +62,7 @@ import { useBreakpoints, breakpointsTailwind } from "@vueuse/core";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
+const { visibleMenu } = useMenu();
 
 const collapsed = ref(false);
 const selectedMenuKeys = ref([]);
@@ -72,30 +73,8 @@ const breakpoints = useBreakpoints(breakpointsTailwind);
 const isMediumAndUp = breakpoints.greaterOrEqual("md");
 const isLargeAndUp = breakpoints.greaterOrEqual("lg");
 
-// Static menu data so we no longer depend on a store
-const menuList = ref([
-  {
-    key: "home",
-    title: "Trang chủ",
-    icon: "ant-design:home-outlined",
-    url: "/",
-  },
-  {
-    key: "playground",
-    title: "Playground",
-    icon: "ant-design:experiment-outlined",
-    children: [
-      { key: "/test", title: "Danh sách test", url: "/test" },
-      { key: "/test/dayjs", title: "Day.js", url: "/test/dayjs" },
-      { key: "/test/tinymce", title: "TinyMCE", url: "/test/tinymce" },
-      { key: "/test/image", title: "Nuxt Image", url: "/test/image" },
-      { key: "/test/icon", title: "Nuxt Icon", url: "/test/icon" },
-      { key: "/test/pinia", title: "Pinia store", url: "/test/pinia" },
-    ],
-  },
-]);
-
-const formattedMenu = computed(() => menuList.value);
+// Menu lấy từ store + đã được lọc theo quyền trong useMenu
+const formattedMenu = computed(() => visibleMenu.value || []);
 
 // Filter menu based on search query
 const filteredMenuList = computed(() => {
@@ -133,20 +112,15 @@ const onMenuOpenChange = openKeys => {
   menuState.openKeys = openKeys.length ? [openKeys.at(-1)] : [];
 };
 
-// Update selected menu when route changes
-watch(
-  () => router.currentRoute.value.fullPath,
-  newPath => {
-    selectedMenuKeys.value = [newPath];
-    const parentItem = formattedMenu.value.find(menu =>
-      menu.children?.some(child => child.url === newPath),
-    );
-    if (parentItem) {
-      menuState.openKeys = [parentItem.key];
-    }
-  },
-  { immediate: true },
-);
+// Update selected menu when route or menu data changes
+watchEffect(() => {
+  const currentPath = router.currentRoute.value.fullPath;
+  selectedMenuKeys.value = [currentPath];
+  const parentItem = formattedMenu.value.find(menu =>
+    menu.children?.some(child => child.url === currentPath),
+  );
+  menuState.openKeys = parentItem ? [parentItem.key] : [];
+});
 
 // Auto collapse/expand based on screen size
 watch(isMediumAndUp, () => {
@@ -160,19 +134,4 @@ watch(isLargeAndUp, () => {
 const expandSidebar = () => {
   collapsed.value = false;
 };
-
-// Initialize menu state on mount
-onMounted(() => {
-  const currentPath = router.currentRoute.value.fullPath;
-  selectedMenuKeys.value = [currentPath];
-
-  // Find parent menu containing current route
-  const parentItem = formattedMenu.value.find(menu =>
-    menu.children?.some(child => child.url === currentPath),
-  );
-
-  if (parentItem) {
-    menuState.openKeys = [parentItem.key];
-  }
-});
 </script>
