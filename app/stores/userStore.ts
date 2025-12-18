@@ -48,7 +48,7 @@ export const useUserStore = defineStore(
     };
 
     const token = computed(() => user.value?.token || null);
-    const name = computed(() => user.value?.item?.hoten || null);
+    const name = computed(() => user.value?.user?.name || null);
     const role = computed(() => user.value?.item?.username || null);
 
     return {

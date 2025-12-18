@@ -128,7 +128,7 @@ export class Request {
         if (ctx.response.status === 401) {
           message.info("Phiên đăng nhập đã hết hạn");
           userStore.logout();
-          await navigateTo("/auth/login");
+          await navigateTo("/login");
         }
 
         return ctx.response._data;

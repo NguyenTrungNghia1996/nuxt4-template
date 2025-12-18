@@ -1,8 +1,7 @@
 <template>
   <div class="flex h-screen w-full flex-col overflow-auto bg-gray-200">
     <div class="h-14">
-      <!-- <BaseHeader /> -->
-      BaseHeader
+      <BaseHeader />
     </div>
     <div class="flex min-h-[calc(100vh-60px)] w-full flex-1 overflow-hidden">
       <!-- <BaseMenu /> -->

@@ -10,9 +10,25 @@
       <a-table :columns="columns" :data-source="dataSource" :pagination="pagination" :loading="loading" :scroll="{ x: '900' }" :row-key="record => record.id || record._id || record.username" @change="handleTableChange" bordered size="small">
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
-            <a-space size="small">
-              <a-button type="link" size="small" @click="openEditModal(record)">Cập nhật</a-button>
-            </a-space>
+            <div class="flex flex-wrap items-center justify-center gap-1 md:flex-nowrap md:space-x-2">
+              <a-tooltip title="Sửa">
+                <a-button type="link" size="small" @click="openEditModal(record)">
+                  <template #icon>
+                    <Icon name="ant-design:edit-outlined" class="text-base" />
+                  </template>
+                </a-button>
+              </a-tooltip>
+
+              <a-popconfirm title="Bạn chắc chắn muốn xóa?" ok-text="Đồng ý" cancel-text="Hủy" @confirm="handleDelete(record)">
+                <a-tooltip title="Xóa">
+                  <a-button type="link" danger size="small" :loading="deletingId === (record.id || record._id)">
+                    <template #icon>
+                      <Icon name="ant-design:delete-outlined" class="text-base" />
+                    </template>
+                  </a-button>
+                </a-tooltip>
+              </a-popconfirm>
+            </div>
           </template>
         </template>
       </a-table>
@@ -47,7 +63,7 @@
 </template>
 
 <script setup>
-const { RestApi } = useApi();
+const { superAdmin, superAdminRoleGroup } = useApi();
 
 /* =======================
    STATE & PARAMS
@@ -76,12 +92,11 @@ const {
   data: superAdminData,
   refresh: refreshSuperAdmin,
   pending: loading,
-} = await RestApi.superAdmin.list(
+} = await superAdmin.get(
   {
     params,
-    watch: [params],
   },
-  "superadmin-list",
+  "superadmin-get",
 );
 
 /* =======================
@@ -113,7 +128,7 @@ const columns = [
     align: "center",
     customRender: ({ index }) => index + 1 + (pagination.current - 1) * pagination.pageSize,
   },
-  { title: "Username", dataIndex: "username", key: "username" },
+  // { title: "Username", dataIndex: "username", key: "username", width: 100 },
   { title: "Họ tên", dataIndex: "name", key: "name" },
   { title: "Email", dataIndex: "email", key: "email" },
   {
@@ -157,6 +172,7 @@ const handleTableChange = pag => {
 const modalVisible = ref(false);
 const isEdit = ref(false);
 const submitting = ref(false);
+const deletingId = ref("");
 const formRef = ref();
 
 const formState = reactive({
@@ -198,7 +214,7 @@ const roleGroupOptions = ref([]);
 
 const fetchRoleGroups = async () => {
   loadingRoleGroups.value = true;
-  const { data } = await RestApi.superAdminRoleGroup.list({
+  const { data } = await superAdminRoleGroup.get({
     params: { page: 0, limit: 0 },
   });
   roleGroupOptions.value =
@@ -245,14 +261,34 @@ const openEditModal = async record => {
   if (!roleGroupOptions.value.length) await fetchRoleGroups();
 };
 
+const handleDelete = async record => {
+  const id = record.id || record._id;
+  if (!id) return;
+
+  deletingId.value = id;
+  try {
+    const { data, error: deleteError } = await superAdmin.delete({ params: { id } });
+    if (data.value?.status === "success") {
+      message.success("Xóa tài khoản thành công");
+      await refreshSuperAdmin();
+    } else {
+      message.error(deleteError.value?.data?.message || "Xóa tài khoản thất bại");
+    }
+  } catch (error) {
+    message.error(error?.message || "Xóa tài khoản thất bại");
+  } finally {
+    deletingId.value = "";
+  }
+};
+
 const handleSubmit = async () => {
   await formRef.value.validate();
   submitting.value = true;
 
   if (isEdit.value) {
-    await RestApi.superAdmin.update({ body: formState });
+    await superAdmin.put({ body: formState });
   } else {
-    await RestApi.superAdmin.create({ body: formState });
+    await superAdmin.post({ body: formState });
   }
 
   modalVisible.value = false;

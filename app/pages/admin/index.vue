@@ -1,8 +1,4 @@
 <template>
-  <div>
-    {{ userStore }}
-  </div>
+  <div>2342</div>
 </template>
-<script setup>
-const userStore = useUserStore();
-</script>
+<script setup></script>
