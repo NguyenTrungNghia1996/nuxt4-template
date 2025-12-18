@@ -626,6 +626,13 @@
   resolved "https://registry.yarnpkg.com/@fastify/accept-negotiator/-/accept-negotiator-2.0.1.tgz#77afd6254ba77f6c22c6f35c4fb0c1b6d005199b"
   integrity sha512-/c/TW2bO/v9JeEgoD/g1G5GxGeCF1Hafdf79WPmUlgYiBXummY0oX3VVq4yFkKKVBKDNlaDUYoab7g38RpPqCQ==
 
+"@iconify-json/ant-design@^1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@iconify-json/ant-design/-/ant-design-1.2.5.tgz#ae6d59a36eb19e19299eaa3f8377a8f3854c38c2"
+  integrity sha512-SYxhrx1AFq2MBcXk77AERYz2mPhLQes1F0vtvG64+dJZWyge9studXo7MiR8PPeLjRjZdWRrReRbxiwdRMf70Q==
+  dependencies:
+    "@iconify/types" "*"
+
 "@iconify/collections@^1.0.608":
   version "1.0.627"
   resolved "https://registry.yarnpkg.com/@iconify/collections/-/collections-1.0.627.tgz#92b138172fc2aa23d7fb2771e151a74768e15700"
