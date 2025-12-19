@@ -45,7 +45,8 @@ export const usePermissions = () => {
       }
       return permissions;
     } catch (err: unknown) {
-      console.error("Lỗi loadPermissions:", err);
+      const message = (err as any)?.message || err;
+      console.error("Lỗi loadPermissions:", message);
       settingStore.setPermissions([]);
       return [];
     }
