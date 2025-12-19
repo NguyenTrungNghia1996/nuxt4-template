@@ -38,7 +38,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/vn_time_table
+          images: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/nuxt4-template
           tags: |
             type=raw,value=latest
             type=raw,value=${{ github.sha }}
