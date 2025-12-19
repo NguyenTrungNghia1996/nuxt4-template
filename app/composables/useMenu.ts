@@ -164,7 +164,7 @@ export const useMenu = () => {
 
       return tree;
     } catch (e) {
-      console.error("Failed to load menu", e);
+      console.error("Failed to load menu:", e?.message || e);
       settingStore.setMenu([]);
       return [];
     }

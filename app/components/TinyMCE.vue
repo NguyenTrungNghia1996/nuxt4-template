@@ -75,7 +75,7 @@ function filePickerCallback(callback, value, meta) {
         // Gọi callback đúng định dạng
         callback(uploadedUrl, { alt: file.name });
       } catch (error) {
-        console.error("S3 upload error:", error);
+        console.error("S3 upload error:", error?.message || error);
         alert("Upload ảnh thất bại. Vui lòng thử lại.");
       }
     };

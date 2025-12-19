@@ -8,8 +8,7 @@
       <!-- BaseMenu -->
       <div class="flex flex-1 flex-col overflow-hidden">
         <div class="sticky top-0 z-10 bg-white">
-          <!-- <BaseBreadcrumb /> -->
-          BaseBreadcrumb
+          <BaseBreadcrumb />
         </div>
         <div class="flex-1 overflow-y-auto p-2">
           <slot />
