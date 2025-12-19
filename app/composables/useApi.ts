@@ -4,6 +4,8 @@ export const useApi = () => ({
   superAdmin: useCrudApi("/superadmins"),
   superAdminRoleGroup: useCrudApi("/superadmin_role_groups"),
   superAdminMenu: useCrudApi("/superadmin_menus"),
+  servicePackages: useCrudApi("/service_packages"),
+  servicePackageMenus: useCrudApi("/service_package_menus"),
   s3Admin: useS3Upload("/uploads/presigned_url"),
   // unitAPI
   authUnit: useAuthApi("/auth/unit"),

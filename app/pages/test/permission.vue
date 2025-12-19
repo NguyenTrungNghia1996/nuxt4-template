@@ -3,8 +3,7 @@
     <div class="mx-auto max-w-5xl space-y-8 px-4 py-10">
       <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="space-y-1">
-          <div
-            class="inline-flex items-center gap-2 rounded-full bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-700">
+          <div class="inline-flex items-center gap-2 rounded-full bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-700">
             <Icon name="ri:shield-keyhole-line" class="h-4 w-4" />
             Permission playground
           </div>
@@ -16,12 +15,8 @@
           </p>
         </div>
         <div class="flex items-center gap-2 text-xs text-gray-600">
-          <span class="rounded-lg bg-white px-3 py-1 shadow-sm ring-1 ring-gray-200">
-            Auto import component
-          </span>
-          <span class="rounded-lg bg-white px-3 py-1 shadow-sm ring-1 ring-gray-200">
-            Client only (fetch)
-          </span>
+          <span class="rounded-lg bg-white px-3 py-1 shadow-sm ring-1 ring-gray-200">Auto import component</span>
+          <span class="rounded-lg bg-white px-3 py-1 shadow-sm ring-1 ring-gray-200">Client only (fetch)</span>
         </div>
       </header>
 
@@ -29,14 +24,10 @@
         <article class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-rose-600">
-                Component
-              </p>
+              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-rose-600">Component</p>
               <h2 class="text-lg font-semibold text-gray-900">PermissionEditor + v-model</h2>
             </div>
-            <span class="rounded-full bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700">
-              Live
-            </span>
+            <span class="rounded-full bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700">Live</span>
           </div>
 
           <div class="mt-4 overflow-hidden rounded-xl border border-gray-100">
@@ -53,8 +44,9 @@
           </div>
 
           <div class="mt-3 rounded-lg bg-rose-50 px-3 py-2 text-xs text-rose-800 ring-1 ring-rose-100">
-            Yêu cầu: backend cung cấp endpoint <code>/superadmin_menus</code>, có token hợp lệ trước
-            khi mở trang này.
+            Yêu cầu: backend cung cấp endpoint
+            <code>/superadmin_menus</code>
+            , có token hợp lệ trước khi mở trang này.
           </div>
         </article>
 
@@ -67,9 +59,7 @@
           <div class="rounded-xl border border-gray-100 bg-slate-900 p-4 font-mono text-xs text-emerald-50">
             <div class="mb-2 flex items-center justify-between text-slate-200">
               <span>permissions</span>
-              <button
-                class="inline-flex items-center gap-1 rounded-md bg-slate-800 px-2 py-1 text-[11px] font-semibold text-emerald-100 ring-1 ring-slate-700 transition hover:bg-slate-700"
-                @click="copyState">
+              <button class="inline-flex items-center gap-1 rounded-md bg-slate-800 px-2 py-1 text-[11px] font-semibold text-emerald-100 ring-1 ring-slate-700 transition hover:bg-slate-700" @click="copyState">
                 <Icon :name="copiedState ? 'ri:check-line' : 'ri:clipboard-line'" class="h-3.5 w-3.5" />
                 <span>{{ copiedState ? "Đã copy" : "Copy" }}</span>
               </button>
@@ -80,8 +70,7 @@
           <div class="space-y-2 text-sm text-gray-700">
             <div class="flex items-start gap-2">
               <span class="mt-1 h-2 w-2 rounded-full bg-rose-500" />
-              Mỗi menu cha (level 1) trả về key + permissionValue; bit chuyển dịch theo permissionBit
-              của từng menu con.
+              Mỗi menu cha (level 1) trả về key + permissionValue; bit chuyển dịch theo permissionBit của từng menu con.
             </div>
             <div class="flex items-start gap-2">
               <span class="mt-1 h-2 w-2 rounded-full bg-rose-500" />
@@ -100,20 +89,14 @@
           <div>
             <p class="text-xs font-semibold uppercase tracking-[0.08em] text-rose-600">Usage</p>
             <h2 class="text-lg font-semibold text-gray-900">Cách nhúng nhanh</h2>
-            <p class="text-sm text-gray-600">
-              Sao chép block dưới để dùng PermissionEditor ở trang khác (ClientOnly để tránh fetch
-              SSR).
-            </p>
+            <p class="text-sm text-gray-600">Sao chép block dưới để dùng PermissionEditor ở trang khác (ClientOnly để tránh fetch SSR).</p>
           </div>
-          <button
-            class="inline-flex items-center gap-2 rounded-lg bg-rose-500 px-3 py-1 text-xs font-semibold text-white transition hover:bg-rose-600"
-            @click="copyUsage">
+          <button class="inline-flex items-center gap-2 rounded-lg bg-rose-500 px-3 py-1 text-xs font-semibold text-white transition hover:bg-rose-600" @click="copyUsage">
             <Icon :name="copiedUsage ? 'ri:check-line' : 'ri:clipboard-line'" class="h-4 w-4" />
             <span>{{ copiedUsage ? "Đã copy" : "Copy" }}</span>
           </button>
         </div>
-        <pre
-          class="mt-4 whitespace-pre-wrap break-words rounded-xl bg-slate-900 p-4 font-mono text-xs leading-relaxed text-emerald-50 shadow-inner ring-1 ring-slate-800"
+        <pre class="mt-4 whitespace-pre-wrap break-words rounded-xl bg-slate-900 p-4 font-mono text-xs leading-relaxed text-emerald-50 shadow-inner ring-1 ring-slate-800"
           >{{ usageSnippet }}
         </pre>
       </section>
@@ -122,11 +105,9 @@
 </template>
 
 <script setup>
-const permissions = ref([
-  { key: 'menu', permissionValue: 0 }
-])
+const permissions = ref([{ key: "menu", permissionValue: 0 }]);
 
-const stateJson = computed(() => JSON.stringify(permissions.value, null, 2))
+const stateJson = computed(() => JSON.stringify(permissions.value, null, 2));
 
 const usageSnippet = `<ClientOnly>
   <PermissionEditor v-model="permissions" />
@@ -134,26 +115,22 @@ const usageSnippet = `<ClientOnly>
 
 const permissions = ref([
   { key: 'menu', permissionValue: 0 }
-]);`
+]);`;
 
-const copiedUsage = ref(false)
-const copiedState = ref(false)
+const copiedUsage = ref(false);
+const copiedState = ref(false);
 
 const copyUsage = async () => {
-  if (!import.meta.client || !navigator?.clipboard) return
-  await navigator.clipboard.writeText(usageSnippet.trim())
-  copiedUsage.value = true
-  setTimeout(() => (copiedUsage.value = false), 1500)
-}
+  if (!import.meta.client || !navigator?.clipboard) return;
+  await navigator.clipboard.writeText(usageSnippet.trim());
+  copiedUsage.value = true;
+  setTimeout(() => (copiedUsage.value = false), 1500);
+};
 
 const copyState = async () => {
-  if (!import.meta.client || !navigator?.clipboard) return
-  await navigator.clipboard.writeText(stateJson.value)
-  copiedState.value = true
-  setTimeout(() => (copiedState.value = false), 1500)
-}
-
-definePageMeta({
-  layout: 'empty'
-})
+  if (!import.meta.client || !navigator?.clipboard) return;
+  await navigator.clipboard.writeText(stateJson.value);
+  copiedState.value = true;
+  setTimeout(() => (copiedState.value = false), 1500);
+};
 </script>
