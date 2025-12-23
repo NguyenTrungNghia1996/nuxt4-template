@@ -19,7 +19,7 @@ export const useS3Upload = (endpoint: string) => {
   const request = new Request();
 
   const getPresignedUrl = async (payload: PresignedPayload): Promise<PresignedData> => {
-    const { data, error } = await request.post<PresignedData>(endpoint, {
+    const { data, error } = await request.put<PresignedData>(endpoint, {
       body: payload,
     });
 
@@ -39,7 +39,7 @@ export const useS3Upload = (endpoint: string) => {
 
     await $fetch(presigned.url, {
       method: "PUT",
-      headers: presigned.headers,
+      // headers: presigned.headers,
       body: file,
     });
 

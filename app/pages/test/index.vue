@@ -74,6 +74,15 @@ const items = [
     badgeText: "text-indigo-600",
   },
   {
+    title: "S3 upload",
+    description: "Test upload S3 qua presigned URL sẵn có (admin / unit).",
+    to: "/test/s3-upload",
+    tag: "Storage",
+    icon: "ri:upload-cloud-2-line",
+    badgeBg: "bg-blue-50",
+    badgeText: "text-blue-600",
+  },
+  {
     title: "Nuxt Icon",
     description: "Danh sách icon từ nhiều bộ (Remix, Phosphor, MDI, Heroicons, Tabler...).",
     to: "/test/icon",

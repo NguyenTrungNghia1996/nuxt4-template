@@ -9,17 +9,7 @@
     </div>
 
     <ClientOnly class="overflow-x-auto">
-      <a-table
-        :columns="columns"
-        :data-source="dataSource"
-        :pagination="pagination"
-        :loading="loading"
-        :scroll="{ x: 1100 }"
-        :row-key="record => record.id || record._id || record.subdomain"
-        @change="handleTableChange"
-        bordered
-        size="small"
-      >
+      <a-table :columns="columns" :data-source="dataSource" :pagination="pagination" :loading="loading" :scroll="{ x: 1100 }" :row-key="record => record.id || record._id || record.subdomain" @change="handleTableChange" bordered size="small">
         <template #bodyCell="{ column, record, index }">
           <template v-if="column.key === 'stt'">
             {{ index + 1 + (pagination.current - 1) * pagination.pageSize }}
@@ -50,11 +40,7 @@
           <template v-else-if="column.key === 'packages'">
             <div class="space-y-1">
               <template v-if="(record.service_packages || []).length">
-                <div
-                  v-for="(pkg, pkgIndex) in record.service_packages"
-                  :key="pkg.service_package_id || pkg.id || pkg._id || pkgIndex"
-                  class="rounded border border-gray-100 bg-gray-50 px-2 py-1"
-                >
+                <div v-for="(pkg, pkgIndex) in record.service_packages" :key="pkg.service_package_id || pkg.id || pkg._id || pkgIndex" class="rounded border border-gray-100 bg-gray-50 px-2 py-1">
                   <div class="flex items-center justify-between gap-2">
                     <span class="text-sm font-medium text-gray-900">{{ resolvePackageName(pkg) }}</span>
                     <a-tag v-if="pkg.start_at && pkg.end_at" size="small" color="green">
@@ -138,19 +124,14 @@
               </div>
 
               <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
-                <a-form-item class="mb-0" label="Gói dịch vụ">
-                  <SelectServicePackage v-model="pkg.service_package_id" placeholder="Chọn gói" />
-                </a-form-item>
-
+                <SelectServicePackage v-model="pkg.service_package_id" placeholder="Chọn gói" />
                 <a-form-item class="mb-0" label="Thời gian hiệu lực">
-                  <a-range-picker v-model:value="pkg.range" show-time class="w-full" format="YYYY-MM-DD HH:mm" />
+                  <a-range-picker v-model:value="pkg.range" class="w-full" format="DD/MM/YYYY" picker="month" />
                 </a-form-item>
               </div>
             </div>
           </template>
-          <div v-else class="rounded-lg border border-dashed border-gray-200 p-3 text-sm text-gray-500">
-            Chưa có gói dịch vụ nào. Nhấn "Thêm gói" để bắt đầu.
-          </div>
+          <div v-else class="rounded-lg border border-dashed border-gray-200 p-3 text-sm text-gray-500">Chưa có gói dịch vụ nào. Nhấn "Thêm gói" để bắt đầu.</div>
         </div>
 
         <div v-if="!isEdit" class="mt-5 rounded-lg border border-dashed border-gray-200 p-3">
@@ -241,7 +222,7 @@ const dataSource = computed(() => {
 });
 
 watch(unitResponse, val => {
-  pagination.total = val?.status === "success" ? val.data?.total ?? val.data?.totalrecord ?? 0 : 0;
+  pagination.total = val?.status === "success" ? (val.data?.total ?? val.data?.totalrecord ?? 0) : 0;
 });
 
 const columns = [
@@ -400,8 +381,7 @@ const formatRange = (start, end) => {
   return `${s} - ${e}`;
 };
 
-const resolvePackageName = pkg =>
-  pkg?.service_package?.name || pkg?.name || pkg?.title || pkg?.service_package_name || pkg?.service_package_id || "Gói dịch vụ";
+const resolvePackageName = pkg => pkg?.service_package?.name || pkg?.name || pkg?.title || pkg?.service_package_name || pkg?.service_package_id || "Gói dịch vụ";
 
 const validateServicePackages = () => {
   const normalized = [];
