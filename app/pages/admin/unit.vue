@@ -41,13 +41,13 @@
             <div class="space-y-1">
               <template v-if="(record.service_packages || []).length">
                 <div v-for="(pkg, pkgIndex) in record.service_packages" :key="pkg.service_package_id || pkg.id || pkg._id || pkgIndex" class="rounded border border-gray-100 bg-gray-50 px-2 py-1">
-                  <div class="flex items-center justify-between gap-2">
-                    <span class="text-sm font-medium text-gray-900">{{ resolvePackageName(pkg) }}</span>
-                    <a-tag v-if="pkg.start_at && pkg.end_at" size="small" color="green">
+                  <p class="text-sm font-medium text-gray-900">{{ resolvePackageName(pkg) }}</p>
+                  <p class="text-xs text-gray-600">
+                    <template v-if="pkg.start_at && pkg.end_at">
                       {{ formatRange(pkg.start_at, pkg.end_at) }}
-                    </a-tag>
-                  </div>
-                  <p v-if="!pkg.start_at || !pkg.end_at" class="text-xs text-gray-500">Chưa cấu hình thời gian</p>
+                    </template>
+                    <template v-else>Chưa cấu hình thời gian</template>
+                  </p>
                 </div>
               </template>
               <span v-else class="text-sm text-gray-400">Chưa gán gói</span>
@@ -88,8 +88,35 @@
         </div>
 
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <a-form-item label="Logo URL" name="logo_url">
-            <a-input v-model:value="formState.logo_url" placeholder="https://example.com/logo.png" />
+          <a-form-item label="Logo" name="logo_url">
+            <div class="flex items-center gap-3">
+              <div class="flex h-14 w-14 items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+                <img v-if="formState.logo_url" :src="formState.logo_url" alt="Logo preview" class="h-full w-full object-cover" />
+                <Icon v-else name="ri:image-add-line" class="text-xl text-gray-400" />
+              </div>
+              <div class="flex-1 space-y-2">
+                <a-input v-model:value="formState.logo_url" placeholder="https://example.com/logo.png" />
+                <div class="flex flex-wrap items-center gap-2">
+                  <ClientOnly>
+                    <a-upload :show-upload-list="false" :before-upload="handleLogoUpload" accept="image/*">
+                      <a-button size="small" :loading="logoUploading">
+                        <template #icon>
+                          <Icon name="ri:upload-2-line" />
+                        </template>
+                        Upload S3
+                      </a-button>
+                    </a-upload>
+                  </ClientOnly>
+                  <a-button v-if="formState.logo_url" size="small" :disabled="logoUploading" @click="clearLogo">
+                    <template #icon>
+                      <Icon name="ri:close-line" />
+                    </template>
+                    Xóa logo
+                  </a-button>
+                </div>
+                <p class="text-xs text-gray-500">Upload lên S3 hoặc dán URL trực tiếp.</p>
+              </div>
+            </div>
           </a-form-item>
 
           <a-form-item label="Mô tả" name="description">
@@ -126,7 +153,7 @@
               <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
                 <SelectServicePackage v-model="pkg.service_package_id" placeholder="Chọn gói" />
                 <a-form-item class="mb-0" label="Thời gian hiệu lực">
-                  <a-range-picker v-model:value="pkg.range" class="w-full" format="DD/MM/YYYY" picker="month" />
+                  <a-range-picker v-model:value="pkg.range" class="w-full" format="DD/MM/YYYY" />
                 </a-form-item>
               </div>
             </div>
@@ -175,7 +202,7 @@
 </template>
 
 <script setup>
-const { units } = useApi();
+const { units, s3Admin } = useApi();
 const { $dayjs } = useNuxtApp();
 const config = useRuntimeConfig();
 
@@ -260,6 +287,7 @@ const isEdit = ref(false);
 const confirmLoading = ref(false);
 const formRef = ref();
 const deletingId = ref("");
+const logoUploading = ref(false);
 
 const formState = reactive({
   id: "",
@@ -362,6 +390,33 @@ const handleCancel = () => {
   modalVisible.value = false;
 };
 
+const handleLogoUpload = async file => {
+  const rawFile = file?.originFileObj || file;
+  if (!rawFile) return false;
+
+  if (!(rawFile instanceof File)) {
+    message.error("File không hợp lệ");
+    return false;
+  }
+
+  logoUploading.value = true;
+  try {
+    const url = await s3Admin.upload(rawFile);
+    formState.logo_url = url;
+    message.success("Upload logo thành công");
+  } catch (err) {
+    message.error(err?.message || err?.data?.message || "Upload logo thất bại");
+  } finally {
+    logoUploading.value = false;
+  }
+
+  return false;
+};
+
+const clearLogo = () => {
+  formState.logo_url = "";
+};
+
 const renderSubdomainUrl = subdomain => {
   if (!subdomain) return "";
   const suffix = baseDomain.value ? `.${baseDomain.value}` : "";
@@ -371,7 +426,7 @@ const renderSubdomainUrl = subdomain => {
 const formatDate = val => {
   if (!val) return "-";
   const d = $dayjs(val);
-  return d.isValid() ? d.format("DD/MM/YYYY HH:mm") : "-";
+  return d.isValid() ? d.format("DD/MM/YYYY") : "-";
 };
 
 const formatRange = (start, end) => {
