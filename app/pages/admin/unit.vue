@@ -38,16 +38,26 @@
           </template>
 
           <template v-else-if="column.key === 'packages'">
-            <div class="space-y-1">
+            <div class="space-y-2">
               <template v-if="(record.service_packages || []).length">
-                <div v-for="(pkg, pkgIndex) in record.service_packages" :key="pkg.service_package_id || pkg.id || pkg._id || pkgIndex" class="rounded border border-gray-100 bg-gray-50 px-2 py-1">
-                  <p class="text-sm font-medium text-gray-900">{{ resolvePackageName(pkg) }}</p>
-                  <p class="text-xs text-gray-600">
-                    <template v-if="pkg.start_at && pkg.end_at">
-                      {{ formatRange(pkg.start_at, pkg.end_at) }}
-                    </template>
-                    <template v-else>Chưa cấu hình thời gian</template>
-                  </p>
+                <div v-for="(pkg, pkgIndex) in record.service_packages" :key="pkg.service_package_id || pkg.id || pkg._id || pkgIndex" class="rounded-lg border border-gray-100 bg-gray-50 p-2 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+                  <div class="flex items-start gap-2">
+                    <span class="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-emerald-50 text-[11px] font-semibold text-emerald-700">
+                      {{ pkgIndex + 1 }}
+                    </span>
+                    <div class="min-w-0 space-y-1">
+                      <div class="flex items-center gap-2">
+                        <p class="truncate text-sm font-semibold text-gray-900">{{ resolvePackageName(pkg) }}</p>
+                        <a-tag size="small" :color="packageDaysColor(pkg)" class="shrink-0">{{ packageDaysLabel(pkg) }}</a-tag>
+                      </div>
+                      <p class="text-xs text-gray-600">
+                        <template v-if="pkg.start_at && pkg.end_at">
+                          {{ formatRange(pkg.start_at, pkg.end_at) }}
+                        </template>
+                        <template v-else>Chưa cấu hình thời gian</template>
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </template>
               <span v-else class="text-sm text-gray-400">Chưa gán gói</span>
@@ -437,6 +447,31 @@ const formatRange = (start, end) => {
 };
 
 const resolvePackageName = pkg => pkg?.service_package?.name || pkg?.name || pkg?.title || pkg?.service_package_name || pkg?.service_package_id || "Gói dịch vụ";
+
+const getDaysLeft = pkg => {
+  const endAt = pkg?.end_at;
+  if (!endAt) return null;
+  const end = $dayjs(endAt);
+  if (!end.isValid()) return null;
+  const today = $dayjs().startOf("day");
+  return end.startOf("day").diff(today, "day");
+};
+
+const packageDaysLabel = pkg => {
+  const diff = getDaysLeft(pkg);
+  if (diff === null) return "Chưa có hạn";
+  if (diff < 0) return `Quá hạn ${Math.abs(diff)} ngày`;
+  if (diff === 0) return "Hết hạn hôm nay";
+  return `Còn ${diff} ngày`;
+};
+
+const packageDaysColor = pkg => {
+  const diff = getDaysLeft(pkg);
+  if (diff === null) return "default";
+  if (diff < 0) return "red";
+  if (diff <= 3) return "orange";
+  return "green";
+};
 
 const validateServicePackages = () => {
   const normalized = [];
