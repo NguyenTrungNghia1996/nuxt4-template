@@ -3,24 +3,16 @@
     <div class="mx-auto max-w-5xl space-y-8">
       <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="space-y-1">
-          <div
-            class="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
+          <div class="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
             <Icon name="ri:database-2-line" class="h-4 w-4" />
             Pinia playground
           </div>
           <h1 class="text-2xl font-semibold text-gray-900">Demo Pinia + persist</h1>
-          <p class="max-w-2xl text-sm text-gray-600">
-            Store đếm đơn giản với actions và getters. Dữ liệu được lưu bằng
-            pinia-plugin-persistedstate (localStorage).
-          </p>
+          <p class="max-w-2xl text-sm text-gray-600">Store đếm đơn giản với actions và getters. Dữ liệu được lưu bằng pinia-plugin-persistedstate (localStorage).</p>
         </div>
         <div class="flex items-center gap-2 text-xs text-gray-600">
-          <span class="rounded-lg bg-white px-3 py-1 shadow-sm ring-1 ring-gray-200">
-            Persist: on
-          </span>
-          <span class="rounded-lg bg-white px-3 py-1 shadow-sm ring-1 ring-gray-200">
-            Getter: doubleCount
-          </span>
+          <span class="rounded-lg bg-white px-3 py-1 shadow-sm ring-1 ring-gray-200">Persist: on</span>
+          <span class="rounded-lg bg-white px-3 py-1 shadow-sm ring-1 ring-gray-200">Getter: doubleCount</span>
         </div>
       </header>
 
@@ -28,14 +20,10 @@
         <article class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-amber-600">
-                Counter
-              </p>
+              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-amber-600">Counter</p>
               <h2 class="text-lg font-semibold text-gray-900">Trạng thái hiện tại</h2>
             </div>
-            <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
-              Store
-            </span>
+            <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">Store</span>
           </div>
           <div class="mt-4 grid gap-4 sm:grid-cols-2">
             <div class="rounded-xl bg-slate-900 p-4 text-amber-100 shadow-inner">
@@ -65,14 +53,10 @@
         <article class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-sky-600">
-                Actions & log
-              </p>
+              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-sky-600">Actions & log</p>
               <h2 class="text-lg font-semibold text-gray-900">Lịch sử cập nhật</h2>
             </div>
-            <span class="rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">
-              Realtime
-            </span>
+            <span class="rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">Realtime</span>
           </div>
           <div class="mt-4 space-y-3 text-sm text-gray-800">
             <div class="rounded-lg bg-gray-50 p-3 ring-1 ring-gray-100">
@@ -81,8 +65,7 @@
                 {{ lastUpdated ? lastUpdated : "Chưa có" }}
               </p>
             </div>
-            <div
-              class="rounded-lg bg-gradient-to-br from-amber-50 to-white p-3 ring-1 ring-amber-100">
+            <div class="rounded-lg bg-gradient-to-br from-amber-50 to-white p-3 ring-1 ring-amber-100">
               <p class="text-xs font-semibold uppercase text-amber-700">Hydrated</p>
               <p class="mt-1 font-medium text-gray-900">
                 {{ hydrated ? "Store đã load từ localStorage" : "Đang chờ..." }}
@@ -103,19 +86,14 @@
           <div>
             <p class="text-xs font-semibold uppercase tracking-[0.08em] text-amber-600">Usage</p>
             <h2 class="text-lg font-semibold text-gray-900">Cách dùng nhanh</h2>
-            <p class="text-sm text-gray-600">
-              Copy snippet để sử dụng lại store đếm có persist/localStorage trong component bất kỳ.
-            </p>
+            <p class="text-sm text-gray-600">Copy snippet để sử dụng lại store đếm có persist/localStorage trong component bất kỳ.</p>
           </div>
-          <button
-            class="inline-flex items-center gap-2 rounded-lg bg-amber-500 px-3 py-1 text-xs font-semibold text-white transition hover:bg-amber-600"
-            @click="copyUsage">
+          <button class="inline-flex items-center gap-2 rounded-lg bg-amber-500 px-3 py-1 text-xs font-semibold text-white transition hover:bg-amber-600" @click="copyUsage">
             <Icon :name="copiedUsage ? 'ri:check-line' : 'ri:clipboard-line'" class="h-4 w-4" />
             <span>{{ copiedUsage ? "Đã copy" : "Copy" }}</span>
           </button>
         </div>
-        <pre
-          class="mt-4 whitespace-pre-wrap break-words rounded-xl bg-slate-900 p-4 font-mono text-xs leading-relaxed text-amber-50 shadow-inner ring-1 ring-slate-800"
+        <pre class="mt-4 whitespace-pre-wrap break-words rounded-xl bg-slate-900 p-4 font-mono text-xs leading-relaxed text-amber-50 shadow-inner ring-1 ring-slate-800"
           >{{ usageCode }}
         </pre>
       </section>
@@ -184,8 +162,5 @@ watch(
 onMounted(() => {
   hydrated.value = true;
   syncSnapshot();
-});
-definePageMeta({
-  layout: "empty",
 });
 </script>

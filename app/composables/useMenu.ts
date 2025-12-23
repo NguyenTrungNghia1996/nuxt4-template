@@ -116,7 +116,10 @@ export const useMenu = () => {
       nodes.forEach(n => sortTree(n.children));
     };
 
-    const roots = items.filter(i => i.parent_Id === null).map(i => map.get(i.id)).filter(Boolean) as MenuTreeItem[];
+    const roots = items
+      .filter(i => i.parent_Id === null)
+      .map(i => map.get(i.id))
+      .filter(Boolean) as MenuTreeItem[];
     sortTree(roots);
 
     const stripStt = (nodes: MenuTreeItem[]) => {
@@ -145,7 +148,7 @@ export const useMenu = () => {
 
   const loadMenu = async (): Promise<MenuTreeItem[]> => {
     try {
-      const { data, error } = await superAdminMenu.get<MenuListResponse>({
+      const { data, error } = await superAdminMenu.get({
         params: { page: 1, limit: 0, sort_order: "asc" },
       });
 
@@ -154,7 +157,7 @@ export const useMenu = () => {
         throw new Error(data.value?.message || "Không thể tải menu");
       }
 
-      const items = normalizeMenuItems(data.value?.data?.items);
+      const items = normalizeMenuItems((data.value?.data as MenuListResponse)?.items);
       const tree = buildTree(items);
       settingStore.setMenu(tree);
 
@@ -164,7 +167,8 @@ export const useMenu = () => {
 
       return tree;
     } catch (e) {
-      console.error("Failed to load menu:", e?.message || e);
+      const errorMessage = e instanceof Error ? e.message : String(e);
+      console.error("Failed to load menu:", errorMessage);
       settingStore.setMenu([]);
       return [];
     }

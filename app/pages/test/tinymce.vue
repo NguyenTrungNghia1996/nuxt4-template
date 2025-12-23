@@ -3,8 +3,7 @@
     <div class="mx-auto max-w-5xl space-y-8 px-4 py-10">
       <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="space-y-1">
-          <div
-            class="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+          <div class="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
             <Icon name="ri:quill-pen-line" class="h-4 w-4" />
             TinyMCE playground
           </div>
@@ -16,12 +15,8 @@
           </p>
         </div>
         <div class="flex items-center gap-2 text-xs text-gray-600">
-          <span class="rounded-lg bg-white px-3 py-1 shadow-sm ring-1 ring-gray-200">
-            SSR safe (ClientOnly)
-          </span>
-          <span class="rounded-lg bg-white px-3 py-1 shadow-sm ring-1 ring-gray-200">
-            Toolbar: link, list, table
-          </span>
+          <span class="rounded-lg bg-white px-3 py-1 shadow-sm ring-1 ring-gray-200">SSR safe (ClientOnly)</span>
+          <span class="rounded-lg bg-white px-3 py-1 shadow-sm ring-1 ring-gray-200">Toolbar: link, list, table</span>
         </div>
       </header>
 
@@ -29,15 +24,10 @@
         <article class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-emerald-600">
-                Editor
-              </p>
+              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-emerald-600">Editor</p>
               <h2 class="text-lg font-semibold text-gray-900">TinyMCE + v-model</h2>
             </div>
-            <span
-              class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-              Live
-            </span>
+            <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">Live</span>
           </div>
           <div class="mt-4 overflow-hidden rounded-xl border border-gray-100 shadow-sm">
             <TinyMCE v-model="data" :init="editorInit" class="w-full" />
@@ -65,8 +55,7 @@
               Đồng bộ hai chiều qua v-model, sự kiện change được phát ra khi nội dung thay đổi.
             </li>
           </ul>
-          <div
-            class="rounded-xl bg-gradient-to-br from-emerald-50 to-sky-50 p-4 text-sm text-gray-800 ring-1 ring-emerald-100">
+          <div class="rounded-xl bg-gradient-to-br from-emerald-50 to-sky-50 p-4 text-sm text-gray-800 ring-1 ring-emerald-100">
             <p class="font-semibold text-emerald-800">Tip</p>
             <p>Thử chọn text và chèn link hoặc tạo danh sách để xem preview HTML bên dưới.</p>
           </div>
@@ -84,14 +73,9 @@
         <div class="mt-4 grid gap-4 lg:grid-cols-2">
           <div class="rounded-xl border border-gray-100 bg-gray-50 p-4 text-sm text-gray-800">
             <p class="mb-2 font-semibold text-gray-700">Rendered</p>
-            <div
-              class="prose max-w-none"
-              v-html="
-                data || '<p class=&quot;text-gray-400&quot;>Nội dung sẽ xuất hiện ở đây...</p>'
-              " />
+            <div class="prose max-w-none" v-html="data || '<p class=&quot;text-gray-400&quot;>Nội dung sẽ xuất hiện ở đây...</p>'" />
           </div>
-          <div
-            class="rounded-xl border border-gray-100 bg-slate-900 p-4 font-mono text-xs text-emerald-100">
+          <div class="rounded-xl border border-gray-100 bg-slate-900 p-4 font-mono text-xs text-emerald-100">
             <p class="mb-2 font-semibold text-slate-200">Markup</p>
             <pre class="whitespace-pre-wrap break-words text-slate-100">
 {{ data || "<!-- Nội dung trống -->" }}
@@ -105,20 +89,14 @@
           <div>
             <p class="text-xs font-semibold uppercase tracking-[0.08em] text-emerald-600">Usage</p>
             <h2 class="text-lg font-semibold text-gray-900">Cách dùng nhanh</h2>
-            <p class="text-sm text-gray-600">
-              Copy block này để gắn TinyMCE (SSR safe) vào trang của bạn với v-model và cấu hình
-              mẫu.
-            </p>
+            <p class="text-sm text-gray-600">Copy block này để gắn TinyMCE (SSR safe) vào trang của bạn với v-model và cấu hình mẫu.</p>
           </div>
-          <button
-            class="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-3 py-1 text-xs font-semibold text-white transition hover:bg-emerald-600"
-            @click="copyUsage">
+          <button class="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-3 py-1 text-xs font-semibold text-white transition hover:bg-emerald-600" @click="copyUsage">
             <Icon :name="copiedUsage ? 'ri:check-line' : 'ri:clipboard-line'" class="h-4 w-4" />
             <span>{{ copiedUsage ? "Đã copy" : "Copy" }}</span>
           </button>
         </div>
-        <pre
-          class="mt-4 whitespace-pre-wrap break-words rounded-xl bg-slate-900 p-4 font-mono text-xs leading-relaxed text-emerald-50 shadow-inner ring-1 ring-slate-800"
+        <pre class="mt-4 whitespace-pre-wrap break-words rounded-xl bg-slate-900 p-4 font-mono text-xs leading-relaxed text-emerald-50 shadow-inner ring-1 ring-slate-800"
           >{{ usageCode }}
         </pre>
       </section>
@@ -127,16 +105,13 @@
 </template>
 
 <script setup>
-const data = ref(
-  `<h3>Chào TinyMCE 👋</h3><p>Đây là nội dung mẫu. Hãy chỉnh sửa, chèn link, danh sách hoặc hình ảnh.</p><ul><li>Gạch đầu dòng</li><li><strong>In đậm</strong> và <em>in nghiêng</em></li></ul>`,
-);
+const data = ref(`<h3>Chào TinyMCE 👋</h3><p>Đây là nội dung mẫu. Hãy chỉnh sửa, chèn link, danh sách hoặc hình ảnh.</p><ul><li>Gạch đầu dòng</li><li><strong>In đậm</strong> và <em>in nghiêng</em></li></ul>`);
 
 const editorInit = {
   menubar: false,
   height: 420,
   plugins: "link lists code table image",
-  toolbar:
-    "undo redo | blocks | bold italic underline forecolor | alignleft aligncenter alignright | bullist numlist | link image table | code",
+  toolbar: "undo redo | blocks | bold italic underline forecolor | alignleft aligncenter alignright | bullist numlist | link image table | code",
   branding: false,
   content_style: "body { font-family: Roboto, sans-serif; font-size:14px; color:#0f172a; }",
   placeholder: "Nhập nội dung...",
@@ -164,8 +139,4 @@ const copyUsage = async () => {
     copiedUsage.value = false;
   }, 1500);
 };
-
-definePageMeta({
-  layout: "empty",
-});
 </script>
