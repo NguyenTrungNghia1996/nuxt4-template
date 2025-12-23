@@ -1,4 +1,5 @@
 // composables/useRequest.ts
+import { useJwt } from "@vueuse/integrations/useJwt";
 import type { FetchContext, FetchResponse } from "ofetch";
 import type { UseFetchOptions } from "#app";
 import type { ApiResponse } from "@/types/api";
@@ -13,6 +14,14 @@ export class Request {
     this.baseURL = unitStore.baseUrl || config.public.baseURL;
   }
 
+  private isTokenValid(token: string) {
+    const { payload } = useJwt(token);
+    const exp = payload.value?.exp;
+    const expTime = typeof exp === "string" ? Number(exp) : exp;
+
+    return typeof expTime === "number" && Date.now() / 1000 < expTime;
+  }
+
   // =========================
   // HANDLERS CHUNG
   // =========================
@@ -20,12 +29,22 @@ export class Request {
     const userStore = useUserStore();
 
     return {
-      onRequest(ctx: FetchContext) {
-        if (userStore.token) {
-          const headers = new Headers(ctx.options.headers);
-          headers.set("Authorization", `Bearer ${userStore.token}`);
-          ctx.options.headers = headers;
+      onRequest: (ctx: FetchContext) => {
+        const token = userStore.token;
+
+        if (!token) return;
+
+        const isValid = this.isTokenValid(token);
+        if (!isValid) {
+          message.info("Phiên đăng nhập đã hết hạn");
+          userStore.logout();
+          navigateTo("/login");
+          return;
         }
+
+        const headers = new Headers(ctx.options.headers);
+        headers.set("Authorization", `Bearer ${token}`);
+        ctx.options.headers = headers;
       },
 
       onResponse(ctx: { response: FetchResponse<ApiResponse<any>> }) {
