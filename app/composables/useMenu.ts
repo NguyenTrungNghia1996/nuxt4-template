@@ -77,6 +77,7 @@ const normalizeMenuItems = (items?: RawMenuItem[] | null): NormalizedMenuItem[] 
 export const useMenu = () => {
   const { superAdminMenu } = useApi();
   const settingStore = useSettingStore();
+  const userStore = useUserStore();
 
   const permissionMap = computed<Record<string, number>>(() => {
     const map: Record<string, number> = {};
@@ -176,6 +177,9 @@ export const useMenu = () => {
 
   const visibleMenu = computed<MenuTreeItem[]>(() => {
     const currentMenu = Array.isArray(settingStore.menu) ? (settingStore.menu as MenuTreeItem[]) : [];
+    if (userStore.is_admin) {
+      return currentMenu;
+    }
     return filterMenu(currentMenu);
   });
 

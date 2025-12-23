@@ -11,4 +11,6 @@ export const useApi = () => ({
   // unitAPI
   authUnit: useAuthApi("/auth/unit"),
   s3Unit: useS3Upload("/unit_uploads/presigned_url"),
+  unitMenu: useCrudApi("/unit_menus"),
+  unitRoleGroup: useCrudApi("/unit_role_groups"),
 });
