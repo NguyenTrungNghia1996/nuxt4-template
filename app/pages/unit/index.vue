@@ -1,4 +1,4 @@
 <template>
-  <div>admin page</div>
+  <div>unit page</div>
 </template>
 <script setup></script>

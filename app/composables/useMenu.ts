@@ -1,4 +1,5 @@
 const ROOT_PARENT_ID = "000000000000000000000000";
+import { useUnitStore } from "../stores/unitStore";
 
 type RawMenuItem = {
   id?: string | number;
@@ -75,9 +76,10 @@ const normalizeMenuItems = (items?: RawMenuItem[] | null): NormalizedMenuItem[] 
 };
 
 export const useMenu = () => {
-  const { superAdminMenu } = useApi();
+  const { superAdminMenu, unitMenu } = useApi();
   const settingStore = useSettingStore();
   const userStore = useUserStore();
+  const unitStore = useUnitStore();
 
   const permissionMap = computed<Record<string, number>>(() => {
     const map: Record<string, number> = {};
@@ -149,9 +151,10 @@ export const useMenu = () => {
 
   const loadMenu = async (): Promise<MenuTreeItem[]> => {
     try {
-      const { data, error } = await superAdminMenu.get({
-        params: { page: 1, limit: 0, sort_order: "asc" },
-      });
+      const isSuperAdmin = unitStore.subdomain === "sa";
+      const { data, error } = isSuperAdmin
+        ? await superAdminMenu.get({ params: { page: 1, limit: 0, sort_order: "asc" } })
+        : await unitMenu.get();
 
       if (error.value) throw error.value;
       if (data.value?.status !== "success") {
