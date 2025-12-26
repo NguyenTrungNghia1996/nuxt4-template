@@ -11,7 +11,8 @@ type PermissionResponse = {
 };
 
 export const usePermissions = () => {
-  const { superAdmin } = useApi();
+  const unitStore = useUnitStore();
+  const { superAdmin, unitUsers } = useApi();
   const settingStore = useSettingStore();
 
   const normalizePermissions = (list: unknown): PermissionItem[] => {
@@ -23,8 +24,7 @@ export const usePermissions = () => {
         if (typeof key !== "string") return null;
         return {
           key,
-          permissionValue:
-            typeof permissionValue === "number" ? permissionValue : Number(permissionValue) || 0,
+          permissionValue: typeof permissionValue === "number" ? permissionValue : Number(permissionValue) || 0,
         };
       })
       .filter(Boolean) as PermissionItem[];
@@ -32,13 +32,13 @@ export const usePermissions = () => {
 
   const loadPermissions = async (): Promise<PermissionItem[]> => {
     try {
-      const { data, error } = await superAdmin.getByRest("permissions");
+      const isSuperAdmin = unitStore.subdomain === "sa";
+      // const { data, error } = await superAdmin.getByRest("permissions");
+      const { data, error } = isSuperAdmin ? await superAdmin.getByRest("permissions") : await unitUsers.getByRest("permissions");
 
       if (error.value) throw error.value;
 
-      const permissions = normalizePermissions(
-        (data.value?.data as PermissionResponse | undefined)?.items,
-      );
+      const permissions = normalizePermissions((data.value?.data as PermissionResponse | undefined)?.items);
       settingStore.setPermissions(permissions);
       if (!permissions.length) {
         console.warn("Không có dữ liệu permission trả về");

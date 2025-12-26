@@ -67,7 +67,7 @@ const handleLogin = async () => {
     } else {
       form.subdomain = unitStore.subdomain;
       res = await authUnit.login({ body: JSON.stringify(form) });
-      navi = "/";
+      navi = "/unit";
     }
     const { data, status, error } = res;
     if (data.value?.status === "success") {

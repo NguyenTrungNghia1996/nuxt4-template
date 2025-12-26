@@ -1,68 +1,31 @@
-// import { defineStore } from "pinia";
-// export const useUserStore = defineStore(
-//   "user",
-//   {
-//     state: () => ({
-//       user: {},
-//     }),
-//     actions: {
-//       setUser(value) {
-//         this.user = value;
-//       },
-//       logout() {
-//         this.user = {};
-//       },
-//     },
-//     getters: {
-//       token: state => {
-//         return state.user?.token || null;
-//       },
-//       name: state => {
-//         return state.user?.item?.hoten || null;
-//       },
-//       role: state => {
-//         return state.user?.item?.username || null;
-//       },
-//     },
-//     persist: {
-//       // storage: piniaPluginPersistedstate.localStorage(),
-//       storage: piniaPluginPersistedstate.cookies(),
-//     },
-//   },
-//   {
-//     persist: true,
-//   },
-// );
-// stores/user.ts
-export const useUserStore = defineStore(
-  "user",
-  () => {
-    const user = ref<any>({});
+import { defineStore } from "pinia";
 
-    const setUser = (value: any) => {
-      user.value = value;
-    };
+type UserState = {
+  user: Record<string, any>;
+};
 
-    const logout = () => {
-      user.value = {};
-    };
+export const useUserStore = defineStore("user", {
+  state: (): UserState => ({
+    user: {},
+  }),
 
-    const token = computed(() => user.value?.token || null);
-    const name = computed(() => user.value?.user?.name || null);
-    const role = computed(() => user.value?.item?.username || null);
-
-    return {
-      user,
-      token,
-      name,
-      role,
-      setUser,
-      logout,
-    };
-  },
-  {
-    persist: {
-      storage: piniaPluginPersistedstate.cookies(),
+  actions: {
+    setUser(value: Record<string, any>) {
+      this.user = value || {};
+      console.log(this.user);
+    },
+    logout() {
+      this.user = {};
     },
   },
-);
+
+  getters: {
+    token: state => state.user?.token ?? null,
+    name: state => state.user?.user?.name ?? null,
+    is_admin: state => state.user?.user?.is_admin ?? null,
+  },
+
+  persist: {
+    storage: piniaPluginPersistedstate.cookies(),
+  },
+});
