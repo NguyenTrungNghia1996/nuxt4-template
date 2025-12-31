@@ -40,12 +40,6 @@
                 <span>Hồ sơ cá nhân</span>
               </div>
             </a-menu-item> -->
-            <a-menu-item key="change_password" class="!mx-0 !px-4 !py-2.5 text-gray-200 hover:bg-gray-700/50 hover:text-white" @click="showChangePasswordModal">
-              <div class="flex items-center gap-2">
-                <KeyOutlined class="text-blue-400" />
-                <span>Đổi mật khẩu</span>
-              </div>
-            </a-menu-item>
             <a-menu-item key="logout" class="!mx-0 !px-4 !py-2.5 text-gray-200 hover:bg-gray-700/50 hover:text-white" @click="signOut">
               <div class="flex items-center gap-2">
                 <LogoutOutlined class="text-red-400" />
@@ -57,107 +51,12 @@
       </a-dropdown>
     </div>
 
-    <!-- Modern Change Password Modal -->
-    <a-modal v-model:open="changePasswordModalVisible" title="Thay đổi mật khẩu" :confirm-loading="confirmLoading" class="[&_.ant-modal-content]:bg-gray-800 [&_.ant-modal-header]:bg-gray-800 [&_.ant-modal-title]:text-white" :footer="null">
-      <a-form layout="vertical" :model="passwordForm" :rules="passwordRules" ref="passwordFormRef" autocomplete="off" class="[&_.ant-form-item-label]:font-medium [&_.ant-form-item-label]:text-gray-300 [&_input]:border-gray-600 [&_input]:bg-gray-700 [&_input]:text-white">
-        <a-form-item label="Mật khẩu hiện tại" name="currentPassword">
-          <a-input-password v-model:value="passwordForm.currentPassword" />
-        </a-form-item>
-        <a-form-item label="Mật khẩu mới" name="newPassword">
-          <a-input-password v-model:value="passwordForm.newPassword" />
-        </a-form-item>
-        <a-form-item label="Xác nhận mật khẩu" name="confirmPassword">
-          <a-input-password v-model:value="passwordForm.confirmPassword" />
-        </a-form-item>
-
-        <div class="flex justify-end gap-3 pt-2">
-          <a-button @click="handleCancel" class="border-gray-600 text-gray-300 hover:border-blue-400 hover:bg-gray-700/50 hover:text-white">Hủy bỏ</a-button>
-          <a-button type="primary" :loading="confirmLoading" @click="handleChangePassword" class="border-blue-600 bg-blue-600 hover:bg-blue-500">Xác nhận</a-button>
-        </div>
-      </a-form>
-    </a-modal>
   </div>
 </template>
 
 <script setup>
 const userStore = useUserStore();
 const unitStore = useUnitStore();
-const { RestApi } = useApi();
-
-// Modal state
-const changePasswordModalVisible = ref(false);
-const confirmLoading = ref(false);
-const passwordFormRef = ref();
-
-// Form data
-const passwordForm = ref({
-  currentPassword: "",
-  newPassword: "",
-  confirmPassword: "",
-});
-
-// Validation rules
-const passwordRules = {
-  currentPassword: [{ required: true, message: "Bạn phải nhập mật khẩu hiện tại" }],
-  newPassword: [
-    { required: true, message: "Bạn phải nhập mật khẩu mới" },
-    { min: 6, message: "Mật khẩu có ít nhất 6 kí tự " },
-  ],
-  confirmPassword: [
-    { required: true, message: "Bạn cần xác nhận lại mật khẩu mới" },
-    ({ getFieldValue }) => ({
-      validator(_, value) {
-        if (!value || getFieldValue("newPassword") === value) {
-          return Promise.resolve();
-        }
-        return Promise.reject("Hai mật khẩu không khớp nhau!");
-      },
-    }),
-  ],
-};
-
-const showChangePasswordModal = () => {
-  changePasswordModalVisible.value = true;
-};
-
-const handleChangePassword = async () => {
-  // try {
-  //   await passwordFormRef.value.validate();
-  //   confirmLoading.value = true;
-  //   const { data, status } = await RestApi.user.change_password({
-  //     body: {
-  //       mat_khau_cu: passwordForm.value.currentPassword,
-  //       mat_khau_moi: passwordForm.value.newPassword,
-  //       xac_nhan_mat_khau: passwordForm.value.confirmPassword,
-  //     },
-  //   });
-  //   if (status.value === "success") {
-  //     message.success("Thay đổi mật khẩu thành công");
-  //     await userStore.logout();
-  //     await navigateTo("/auth/login");
-  //   } else {
-  //     message.error("Thay đổi mật khẩu không thành công");
-  //   }
-  // } catch (error) {
-  //   message.error(error.response?.data?.message || "Thay đổi mật khẩu thất bại");
-  // } finally {
-  //   resetForm();
-  //   confirmLoading.value = false;
-  // }
-};
-
-const handleCancel = () => {
-  resetForm();
-  changePasswordModalVisible.value = false;
-};
-
-const resetForm = () => {
-  passwordForm.value = {
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  };
-};
 
 const signOut = async () => {
   try {
