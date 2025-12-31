@@ -20,13 +20,19 @@
 </template>
 
 <script setup>
-const { superAdminMenu } = useApi()
+const { superAdminMenu, unitMenu } = useApi()
 const ROOT_PARENT_ID = '000000000000000000000000'
 
 const props = defineProps({
   modelValue: {
     type: Array,
     default: () => []
+  },
+  // scope = 'admin' => dùng menu superadmin, 'unit' => dùng menu đơn vị
+  scope: {
+    type: String,
+    default: 'admin',
+    validator: val => ['admin', 'unit'].includes(val)
   }
 })
 
@@ -63,7 +69,8 @@ const resetMenuState = () => {
 // Load dữ liệu menu
 const fetchData = async () => {
   try {
-    const { data } = await superAdminMenu.get({
+    const api = props.scope === 'unit' ? unitMenu : superAdminMenu
+    const { data } = await api.get({
       params: {
         page: 1,
         limit: 0,
@@ -216,6 +223,12 @@ const permissionList = computed(() => {
 
 // Khởi tạo component
 fetchData()
+
+// Reload khi scope đổi (ví dụ dùng cho trang unit)
+watch(() => props.scope, () => {
+  resetMenuState()
+  fetchData()
+})
 </script>
 
 <style scoped>

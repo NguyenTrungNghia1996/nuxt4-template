@@ -50,6 +50,37 @@
           </a-form-item>
         </div>
 
+        <a-form-item label="Ảnh đại diện" name="image_url">
+          <div class="flex items-center gap-3">
+            <div class="flex h-14 w-14 items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+              <img v-if="formState.image_url" :src="formState.image_url" alt="Avatar preview" class="h-full w-full object-cover" />
+              <Icon v-else name="ri:image-add-line" class="text-xl text-gray-400" />
+            </div>
+            <div class="flex-1 space-y-2">
+              <a-input v-model:value="formState.image_url" placeholder="https://example.com/member1.png" />
+              <div class="flex flex-wrap items-center gap-2">
+                <ClientOnly>
+                  <a-upload :show-upload-list="false" :before-upload="handleImageUpload" accept="image/*">
+                    <a-button size="small" :loading="imageUploading">
+                      <template #icon>
+                        <Icon name="ri:upload-2-line" />
+                      </template>
+                      Upload S3
+                    </a-button>
+                  </a-upload>
+                </ClientOnly>
+                <a-button v-if="formState.image_url" size="small" :disabled="imageUploading" @click="clearImage">
+                  <template #icon>
+                    <Icon name="ri:close-line" />
+                  </template>
+                  Xóa ảnh
+                </a-button>
+              </div>
+              <p class="text-xs text-gray-500">Upload lên S3 hoặc dán URL trực tiếp.</p>
+            </div>
+          </div>
+        </a-form-item>
+
         <a-form-item v-if="!isEdit" label="Mật khẩu" name="password" :rules="passwordRules">
           <a-input-password v-model:value="formState.password" />
         </a-form-item>
@@ -65,7 +96,7 @@
 </template>
 
 <script setup>
-const { superAdmin } = useApi();
+const { superAdmin, s3Admin } = useApi();
 
 /* =======================
    STATE & PARAMS
@@ -176,6 +207,7 @@ const isEdit = ref(false);
 const submitting = ref(false);
 const deletingId = ref("");
 const formRef = ref();
+const imageUploading = ref(false);
 
 const formState = reactive({
   id: "",
@@ -185,6 +217,7 @@ const formState = reactive({
   email: "",
   is_admin: false,
   role_group_ids: [],
+  image_url: "",
 });
 
 const modalTitle = computed(() => (isEdit.value ? "Cập nhật super admin" : "Thêm super admin"));
@@ -217,6 +250,7 @@ const resetForm = () => {
     email: "",
     is_admin: false,
     role_group_ids: [],
+    image_url: "",
   });
   formRef.value?.clearValidate();
 };
@@ -237,6 +271,7 @@ const openEditModal = async record => {
     email: record.email,
     is_admin: !!record.is_admin,
     role_group_ids: record.role_group_ids || [],
+    image_url: record.image_url || record.avatar || record.photo || "",
   });
   modalVisible.value = true;
 };
@@ -281,5 +316,32 @@ const handleSubmit = async () => {
 const handleCancel = () => {
   resetForm();
   modalVisible.value = false;
+};
+
+const handleImageUpload = async file => {
+  const rawFile = file?.originFileObj || file;
+  if (!rawFile) return false;
+
+  if (!(rawFile instanceof File)) {
+    message.error("File không hợp lệ");
+    return false;
+  }
+
+  imageUploading.value = true;
+  try {
+    const url = await s3Admin.upload(rawFile);
+    formState.image_url = url;
+    message.success("Upload ảnh thành công");
+  } catch (err) {
+    message.error(err?.message || err?.data?.message || "Upload ảnh thất bại");
+  } finally {
+    imageUploading.value = false;
+  }
+
+  return false;
+};
+
+const clearImage = () => {
+  formState.image_url = "";
 };
 </script>

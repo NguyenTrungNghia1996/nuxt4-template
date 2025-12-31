@@ -12,7 +12,6 @@ export const useUserStore = defineStore("user", {
   actions: {
     setUser(value: Record<string, any>) {
       this.user = value || {};
-      console.log(this.user);
     },
     logout() {
       this.user = {};
@@ -23,6 +22,7 @@ export const useUserStore = defineStore("user", {
     token: state => state.user?.token ?? null,
     name: state => state.user?.user?.name ?? null,
     is_admin: state => state.user?.user?.is_admin ?? null,
+    image_url: state => state.user?.user?.image_url ?? "",
   },
 
   persist: {

@@ -5,6 +5,7 @@ export const useApi = () => ({
   //SuperAdmin
   authAdmin: useAuthApi("/auth/admin"),
   superAdmin: useCrudApi("/admin/superadmins"),
+  superAdminMe: useCrudApi("/admin/superadmin_me"),
   superAdminRoleGroup: useCrudApi("/admin/superadmin_role_groups"),
   superAdminMenu: useCrudApi("/admin/superadmin_menus"),
   units: useCrudApi("/admin/units"),
@@ -17,4 +18,5 @@ export const useApi = () => ({
   unitMenu: useCrudApi("/unit/unit_menus"),
   unitRoleGroup: useCrudApi("/unit/unit_role_groups"),
   unitUsers: useCrudApi("/unit/unit_users"),
+  unitMe: useCrudApi("/unit/unit_me"),
 });
