@@ -151,8 +151,7 @@ export const useMenu = () => {
 
   const loadMenu = async (): Promise<MenuTreeItem[]> => {
     try {
-      const isSuperAdmin = unitStore.subdomain === "sa";
-      const { data, error } = isSuperAdmin
+      const { data, error } = unitStore.isSuperAdmin
         ? await superAdminMenu.get({ params: { page: 1, limit: 0, sort_order: "asc" } })
         : await unitMenu.get();
 

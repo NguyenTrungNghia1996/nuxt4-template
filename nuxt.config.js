@@ -37,6 +37,9 @@ export default defineNuxtConfig({
     encryptionKey: process.env.NUXT_ENCRYPTION_KEY || "default-strong-key-32-chars-123456",
     public: {
       baseURL: process.env.NUXT_PUBLIC_BASE_URL || "http://127.0.0.1:4000",
+      superAdminName: process.env.NUXT_PUBLIC_SUPER_ADMIN_NAME || "Super Admin",
+      superAdminSubdomain: process.env.NUXT_PUBLIC_SUPER_ADMIN_SUBDOMAIN || "sa",
+      superAdminLogoUrl: process.env.NUXT_PUBLIC_SUPER_ADMIN_LOGO_URL || "https://cdn.nghia196.io.vn/admin/0bb442c5-ef40-494f-ab72-a694a7cf642b-logo.png",
       // Docker build/version info (injected via ENV or build args)
       buildTag: process.env.NUXT_PUBLIC_BUILD_TAG || "dev",
       buildSha: process.env.NUXT_PUBLIC_BUILD_SHA || "",

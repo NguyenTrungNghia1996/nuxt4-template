@@ -1,5 +1,8 @@
 // composables/useApi.ts
 export const useApi = () => ({
+  //public
+  unitInfo: useCrudApi("/units/public_info"),
+  //SuperAdmin
   authAdmin: useAuthApi("/auth/admin"),
   superAdmin: useCrudApi("/admin/superadmins"),
   superAdminRoleGroup: useCrudApi("/admin/superadmin_role_groups"),

@@ -5,7 +5,7 @@
         <img :src="unitStore.logo" alt="Logo công ty" class="h-20 w-auto" />
       </div>
       <a-card class="shadow-xl">
-        <h2 class="mb-6 text-center text-2xl font-bold text-gray-800">Đăng nhập hệ thống</h2>
+        <h2 class="mb-6 text-center text-2xl font-bold text-gray-800">Đăng nhập {{ unitStore.name }}</h2>
         <a-form :model="form" layout="vertical" @finish="handleLogin" autocomplete="off">
           <a-form-item label="Tài khoản" name="username" :rules="[{ required: true, message: 'Vui lòng nhập nhập tài khoản!' }]">
             <a-input v-model:value="form.username" placeholder="Nhập tài khoản của bạn" size="large">
@@ -61,7 +61,7 @@ const handleLogin = async () => {
   try {
     let res;
     let navi;
-    if (unitStore.subdomain == "sa") {
+    if (unitStore.isSuperAdmin) {
       res = await authAdmin.login({ body: JSON.stringify(form) });
       navi = "/admin";
     } else {
