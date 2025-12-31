@@ -25,20 +25,6 @@ export const useUnitStore = defineStore("unit", {
     // unitId: (state) => state.unit?._id || null,
     // subdomain: (state) => state.unit?.subdomain || null,
     // isActive: (state) => state.unit?.active === true,
-    baseUrl: state => {
-      switch (state.unit) {
-        case "tkb":
-          return "https://api.tkb.nguyenanh-est.com";
-        case "dungthutkb":
-          return "https://api.dungthutkb.nguyenanh-est.com";
-        case "testtkb":
-          return "https://api.testtkb.nguyenanh-est.com";
-        case "dungthu":
-          return "https://api.dungthutkb.nguyenanh-est.com";
-        default:
-          return useRuntimeConfig().public.baseURL;
-      }
-    },
     logo: state => {
       // return "/logo.png";
       return "https://image.nguyenanh-est.com/website/1745742349824_placeholder.png";

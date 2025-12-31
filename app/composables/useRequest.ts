@@ -11,7 +11,7 @@ export class Request {
     const unitStore = useUnitStore();
     const config = useRuntimeConfig();
 
-    this.baseURL = unitStore.baseUrl || config.public.baseURL;
+    this.baseURL = config.public.baseURL;
   }
 
   private isTokenValid(token: string) {
