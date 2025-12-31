@@ -32,9 +32,7 @@ export const usePermissions = () => {
 
   const loadPermissions = async (): Promise<PermissionItem[]> => {
     try {
-      const isSuperAdmin = unitStore.subdomain === "sa";
-      // const { data, error } = await superAdmin.getByRest("permissions");
-      const { data, error } = isSuperAdmin ? await superAdmin.getByRest("permissions") : await unitUsers.getByRest("permissions");
+      const { data, error } = unitStore.isSuperAdmin ? await superAdmin.getByRest("permissions") : await unitUsers.getByRest("permissions");
 
       if (error.value) throw error.value;
 

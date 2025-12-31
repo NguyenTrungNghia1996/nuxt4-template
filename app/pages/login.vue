@@ -61,7 +61,7 @@ const handleLogin = async () => {
   try {
     let res;
     let navi;
-    if (unitStore.subdomain == "sa") {
+    if (unitStore.isSuperAdmin) {
       res = await authAdmin.login({ body: JSON.stringify(form) });
       navi = "/admin";
     } else {

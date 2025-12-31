@@ -1,5 +1,5 @@
 import type { ApiResponse } from "@/types/api";
-import { useUnitStore, type UnitInfo, SUPER_ADMIN_UNIT } from "../stores/unitStore";
+import { getSuperAdminUnit, useUnitStore, type UnitInfo } from "../stores/unitStore";
 
 type UnitInfoResponse = ApiResponse<UnitInfo | { unit?: UnitInfo }>;
 
@@ -21,10 +21,11 @@ export const useUnitInfo = () => {
       return null;
     }
 
-    if (targetSubdomain === "sa") {
-      unitStore.setSubdomain("sa");
-      unitStore.setUnit(SUPER_ADMIN_UNIT);
-      return SUPER_ADMIN_UNIT;
+    const superAdmin = getSuperAdminUnit();
+    if (superAdmin.subdomain && targetSubdomain === superAdmin.subdomain) {
+      unitStore.setSubdomain(superAdmin.subdomain);
+      unitStore.setUnit({ ...superAdmin });
+      return { ...superAdmin };
     }
 
     try {
