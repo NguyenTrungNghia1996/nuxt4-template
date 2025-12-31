@@ -22,7 +22,7 @@
 
             <!-- Avatar -->
             <div class="relative">
-              <a-avatar v-if="userStore.user.avatar" :src="userStore.user.avatar" class="h-9 w-9 transition-all duration-300 ease-out group-hover:scale-110 group-hover:ring-2 group-hover:ring-blue-400" />
+              <a-avatar v-if="userStore.image_url" :src="userStore.image_url" class="h-9 w-9 transition-all duration-300 ease-out group-hover:scale-110 group-hover:ring-2 group-hover:ring-blue-400" />
               <a-avatar v-else class="h-9 w-9 bg-gray-600 transition-all duration-300 ease-out group-hover:scale-110 group-hover:ring-2 group-hover:ring-blue-400" :style="{ verticalAlign: 'middle' }" style="background-color: #8e8e8e">
                 <template #icon>
                   <UserOutlined class="text-gray-300" />
