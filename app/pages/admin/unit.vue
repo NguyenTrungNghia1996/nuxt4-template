@@ -33,7 +33,14 @@
           <template v-else-if="column.key === 'subdomain'">
             <div class="space-y-1">
               <a-tag color="blue">{{ record.subdomain || "-" }}</a-tag>
-              <p v-if="record.subdomain" class="text-xs text-gray-500">{{ renderSubdomainUrl(record.subdomain) }}</p>
+              <NuxtLink
+                v-if="record.subdomain"
+                :to="renderSubdomainUrl(record.subdomain)"
+                target="_blank"
+                rel="noopener"
+                class="block text-xs text-gray-500 underline">
+                {{ renderSubdomainUrl(record.subdomain) }}
+              </NuxtLink>
             </div>
           </template>
 
@@ -215,9 +222,23 @@
 const { units, s3Admin } = useApi();
 const { $dayjs } = useNuxtApp();
 const config = useRuntimeConfig();
+const getHostname = () => {
+  const url = useRequestURL();
+  const headers = useRequestHeaders() || {};
+  const raw = headers["host"] || url.host || "";
 
+  const hostname = (raw.split(",")[0] || "").trim().split(":")[0] || "";
+
+  const parts = hostname.split(".");
+
+  // Nếu là IP hoặc localhost thì giữ nguyên
+  if (parts.length <= 2) return hostname;
+
+  // Giữ lại domain chính (2 phần cuối)
+  return parts.slice(-2).join(".");
+};
 const baseDomain = computed(() => {
-  const url = config.public.baseURL || "";
+  const url = getHostname() || "";
   try {
     const parsed = new URL(url);
     return parsed.hostname || "";
