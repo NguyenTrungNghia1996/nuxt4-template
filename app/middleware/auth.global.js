@@ -12,9 +12,11 @@ export default defineNuxtRouteMiddleware(async to => {
   const settingStore = useSettingStore();
   const { loadMenu } = useMenu();
   const { loadPermissions, setPermissions } = usePermissions();
+  const { loadUnitInfo } = useUnitInfo();
   const hostname = getHostname();
   const sub = hostname.split(".")[0];
   unitStore.setSubdomain(sub);
+  loadUnitInfo();
   const token = userStore.token;
   if (!token) {
     if (!isPublicRoute) return navigateTo("/login");
