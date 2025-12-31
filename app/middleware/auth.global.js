@@ -1,10 +1,6 @@
-function getHostname() {
-  const url = useRequestURL();
-  const headers = useRequestHeaders() || {};
-  const raw = headers["host"] || url.host || "";
-  return (raw.split(",")[0] || "").trim().split(":")[0] || "";
-}
 import { useJwt } from "@vueuse/integrations/useJwt";
+import { getRequestDomainInfo } from "@/utils/domain";
+
 export default defineNuxtRouteMiddleware(async to => {
   const isPublicRoute = to.path === "/login" || to.path.startsWith("/test/");
   const userStore = useUserStore();
@@ -13,9 +9,9 @@ export default defineNuxtRouteMiddleware(async to => {
   const { loadMenu } = useMenu();
   const { loadPermissions, setPermissions } = usePermissions();
   const { loadUnitInfo } = useUnitInfo();
-  const hostname = getHostname();
-  const sub = hostname.split(".")[0];
-  unitStore.setSubdomain(sub);
+
+  const { subdomain } = getRequestDomainInfo();
+  unitStore.setSubdomain(subdomain);
   loadUnitInfo();
   const token = userStore.token;
   if (!token) {
